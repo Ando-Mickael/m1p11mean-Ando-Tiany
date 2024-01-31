@@ -8,7 +8,7 @@ function sendingSignupCode(email) {
     senderName: "[NO REPLY] Informa'Tiako",
     to: email,
     subject: "Sign up code",
-    text: `This is the code ${code}`,
+    text: `This is the code ${code}.`,
   });
 
   return code;

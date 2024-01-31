@@ -41,10 +41,10 @@ testem.log
 .DS_Store
 Thumbs.db
 
-.vscode
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
 .env
 
+.vscode
 .idea
