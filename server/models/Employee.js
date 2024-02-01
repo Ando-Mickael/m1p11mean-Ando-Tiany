@@ -7,8 +7,7 @@ const workScheduleSchema = new mongoose.Schema({
 });
 
 const taskSchema = new mongoose.Schema({
-    taskId: { type: mongoose.Schema.Types.ObjectId, ref: 'Task', required: true },
-    commissionEarned: { type: Number, required: true }
+    serviceId: { type: String, required: true }
 });
 
 const employeeSchema = new mongoose.Schema({

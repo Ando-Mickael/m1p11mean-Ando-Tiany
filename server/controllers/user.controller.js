@@ -1,6 +1,6 @@
 const User = require("../models/User");
 
-async function getUserById(req, res) {
+async function getUserById(req, res, next) {
     const userId = req.params.id;
 
     try {
@@ -10,7 +10,8 @@ async function getUserById(req, res) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        res.json(user);
+        req["user"] = user;
+        next();
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
