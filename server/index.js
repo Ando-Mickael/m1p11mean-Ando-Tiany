@@ -17,6 +17,8 @@ app.use(cors());
 // routes
 app.use("/", require("./routes"));
 app.use("/auth", require("./routes/auth.route"));
+app.use("/employee", require("./routes/employee.route"));
+app.use("/users", require("./routes/user.route"));
 
 // start server
 app.listen(port);
