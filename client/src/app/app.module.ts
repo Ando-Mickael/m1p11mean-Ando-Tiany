@@ -12,6 +12,7 @@ import { SignupComponent } from './signup/signup.component';
 import { HomeClientComponent } from './home-client/home-client.component';
 import {LoginComponent} from "./login/login.component";
 import {AuthService} from "./services/auth.service";
+import {HomeEmployeeComponent} from "./home-employee/home-employee.component";
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import {AuthService} from "./services/auth.service";
     SignupComponent,
     SignupCodeComponent,
     HomeClientComponent,
+    HomeEmployeeComponent,
     LoginComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule],
