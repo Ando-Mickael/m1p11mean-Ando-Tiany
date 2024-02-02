@@ -7,6 +7,7 @@ import { SignupComponent } from './signup/signup.component';
 import {LoginComponent} from "./login/login.component";
 import {HomeEmployeeComponent} from "./home-employee/home-employee.component";
 import {HomeManagerComponent} from "./home-manager/home-manager.component";
+import {ServiceComponent} from "./service/service.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'client', component: HomeClientComponent },
   { path: 'employee', component: HomeEmployeeComponent },
   { path: 'manager', component: HomeManagerComponent },
+  { path: 'services', component: ServiceComponent },
 ];
 
 @NgModule({
