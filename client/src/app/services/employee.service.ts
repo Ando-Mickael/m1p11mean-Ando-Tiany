@@ -15,4 +15,8 @@ export class EmployeeService {
     return this.http.get(url);
   }
 
+  updateEmployee(userId: string, formData: any): Observable<any> {
+    const url = `${this.apiUrl}/employees/${userId}`;
+    return this.http.post(url, formData);
+  }
 }

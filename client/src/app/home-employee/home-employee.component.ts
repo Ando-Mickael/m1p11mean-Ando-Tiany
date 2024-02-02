@@ -127,9 +127,32 @@ export class HomeEmployeeComponent implements OnInit {
     return this.updateForm.get(`workSchedule.${day}.endTime`) as FormControl;
   }
 
-  // Add a method to handle form submission when you implement the button click
   onSubmit() {
-    // Implement the logic to update the employee data
-    // You can access the form values using this.updateForm.value
+    const token = localStorage.getItem('token');
+    const userId = token ? JSON.parse(atob(token.split('.')[1])).userId : null;
+
+    if (userId) {
+      const formData = {
+        email: this.updateForm.get('email')?.value,
+        firstName: this.updateForm.get('firstName')?.value,
+        lastName: this.updateForm.get('lastName')?.value,
+        // Add more fields as needed
+      };
+
+      // Use the employee service to send a POST request to update the employee data
+      this.employeeService.updateEmployee(userId, formData).subscribe(
+        (updatedEmployee) => {
+          console.log('Employee updated successfully', updatedEmployee);
+          // You can handle success, e.g., show a success message
+        },
+        (error) => {
+          console.error('Error updating employee', error);
+          // You can handle errors, e.g., show an error message
+        }
+      );
+    } else {
+      console.error('User ID not found in the token.');
+      // Handle the case where user ID is not found in the token
+    }
   }
 }
