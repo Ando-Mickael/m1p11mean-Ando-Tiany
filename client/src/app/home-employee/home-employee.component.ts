@@ -1,9 +1,9 @@
 // home-employee.component.ts
 
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { EmployeeService } from '../services/employee.service';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../services/auth.service';
+import {EmployeeService} from '../services/employee.service';
+import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-home-employee',
@@ -136,7 +136,7 @@ export class HomeEmployeeComponent implements OnInit {
         email: this.updateForm.get('email')?.value,
         firstName: this.updateForm.get('firstName')?.value,
         lastName: this.updateForm.get('lastName')?.value,
-        // Add more fields as needed
+        workSchedule: this.extractWorkScheduleFromForm(),
       };
 
       // Use the employee service to send a POST request to update the employee data
@@ -154,5 +154,17 @@ export class HomeEmployeeComponent implements OnInit {
       console.error('User ID not found in the token.');
       // Handle the case where user ID is not found in the token
     }
+  }
+
+  private extractWorkScheduleFromForm(): any[] {
+    const workSchedule: any[] = [];
+    this.daysOfWeek.forEach(day => {
+      const startTime = this.updateForm.get(`workSchedule.${day}.startTime`)?.value;
+      const endTime = this.updateForm.get(`workSchedule.${day}.endTime`)?.value;
+      if (startTime !== '' && endTime !== '') {
+        workSchedule.push({day, startTime, endTime});
+      }
+    });
+    return workSchedule;
   }
 }

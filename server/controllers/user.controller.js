@@ -37,10 +37,8 @@ async function updateUser(req, res, next) {
         user.lastName = lastName || user.lastName;
         user.birthday = birthday || user.birthday;
 
-        // Save the updated user
-        const updatedUser = await user.save();
-
-        res.json(updatedUser);
+        req["user"] = await user.save();
+        next();
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
