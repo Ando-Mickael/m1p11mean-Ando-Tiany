@@ -1,1 +1,51 @@
-<p>home-employee works!</p>
+<div *ngIf="employee">
+  <h2>Mon Profil</h2>
+
+  <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="firstName">Prénom:</label>
+      <input type="text" id="firstName" formControlName="firstName" />
+    </div>
+
+    <div class="form-group">
+      <label for="lastName">Nom:</label>
+      <input type="text" id="lastName" formControlName="lastName" />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" formControlName="email" />
+    </div>
+
+    <div class="form-group">
+      <label for="workSchedule">Horaire de travail:</label>
+      <div *ngFor="let day of daysOfWeek">
+        <div>
+          {{ day }}:
+          <input
+            type="text"
+            [formControl]="getStartTimeControl(day)!"
+            placeholder="Heure de début"
+          />
+          -
+          <input
+            type="text"
+            [formControl]="getEndTimeControl(day)!"
+            placeholder="Heure de fin"
+          />
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+
+    <button type="submit">Mettre à jour le profil</button>
+  </form>
+</div>
+
+<div *ngIf="!employee">
+  <p>Chargement des données de l'employé...</p>
+</div>
