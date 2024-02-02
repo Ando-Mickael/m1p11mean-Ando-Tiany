@@ -14,11 +14,15 @@ mongoose.connect(getURL());
 app.use(express.json());
 app.use(cors());
 
+// Serve static files from the "uploads" directory
+app.use("/uploads", express.static("uploads"));
+
 // routes
 app.use("/", require("./routes"));
 app.use("/auth", require("./routes/auth.route"));
 app.use("/employees", require("./routes/employee.route"));
 app.use("/users", require("./routes/user.route"));
+app.use("/upload", require("./routes/upload.route"));
 
 // start server
 app.listen(port);

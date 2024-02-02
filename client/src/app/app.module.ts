@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatIconModule } from '@angular/material/icon';
 
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -13,6 +15,7 @@ import { HomeClientComponent } from './home-client/home-client.component';
 import {LoginComponent} from "./login/login.component";
 import {AuthService} from "./services/auth.service";
 import {HomeEmployeeComponent} from "./home-employee/home-employee.component";
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [
@@ -24,8 +27,8 @@ import {HomeEmployeeComponent} from "./home-employee/home-employee.component";
     HomeEmployeeComponent,
     LoginComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule],
-  providers: [AuthService],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule, DragDropModule,MatIconModule,],
+  providers: [AuthService, provideAnimationsAsync()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

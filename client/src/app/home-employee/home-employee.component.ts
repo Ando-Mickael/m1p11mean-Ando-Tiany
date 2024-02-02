@@ -4,6 +4,10 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../services/auth.service';
 import {EmployeeService} from '../services/employee.service';
 import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatFileUploadQueueService } from '../services/mat-file-upload-queue.service';
+import { FileUploadService } from '../services/file-upload.service';
+import {forkJoin, Observable} from "rxjs";
 
 @Component({
   selector: 'app-home-employee',
@@ -18,8 +22,11 @@ export class HomeEmployeeComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private employeeService: EmployeeService,
-    private formBuilder: FormBuilder
-  ) {
+    private formBuilder: FormBuilder,
+    private fileUploadQueueService: MatFileUploadQueueService,
+    private fileUploadService: FileUploadService
+
+) {
     this.updateForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -56,10 +63,24 @@ export class HomeEmployeeComponent implements OnInit {
       })
       // Add more controls as needed
     });
+    this.fileUploadQueueService.uploadQueue$.subscribe((uploadQueue) => {
+      // Handle file uploads, update your form, etc.
+      console.log('Upload Queue:', uploadQueue);
+    });
   }
 
   ngOnInit(): void {
     this.loadEmployeeData();
+  }
+
+  onImageSelected(event: any) {
+    const files: File[] = Array.from(event.target.files);
+    this.fileUploadQueueService.addToQueue(files);
+    // Handle other file-related logic if needed
+  }
+
+  onImageDropped(event: CdkDragDrop<any[]>) {
+    moveItemInArray(this.employee.images, event.previousIndex, event.currentIndex);
   }
 
   loadEmployeeData() {
@@ -132,28 +153,66 @@ export class HomeEmployeeComponent implements OnInit {
     const userId = token ? JSON.parse(atob(token.split('.')[1])).userId : null;
 
     if (userId) {
-      const formData = {
+      const formData: { [key: string]: any } = {  // Specify the type of formData
         email: this.updateForm.get('email')?.value,
         firstName: this.updateForm.get('firstName')?.value,
         lastName: this.updateForm.get('lastName')?.value,
         workSchedule: this.extractWorkScheduleFromForm(),
       };
 
-      // Use the employee service to send a POST request to update the employee data
-      this.employeeService.updateEmployee(userId, formData).subscribe(
-        (updatedEmployee) => {
-          console.log('Employee updated successfully', updatedEmployee);
-          // You can handle success, e.g., show a success message
-        },
-        (error) => {
-          console.error('Error updating employee', error);
-          // You can handle errors, e.g., show an error message
-        }
-      );
+      const fileQueue = this.fileUploadQueueService.uploadQueue;
+
+      if (fileQueue.length > 0) {
+        // Upload files before submitting the form
+        this.uploadFiles(fileQueue).subscribe(
+          (fileNames) => {
+            // Include file names in the formData
+            formData['images'] = fileNames;
+
+            // Use the employee service to send a POST request to update the employee data
+            this.employeeService.updateEmployee(userId, formData).subscribe(
+              (updatedEmployee) => {
+                console.log('Employee updated successfully', updatedEmployee);
+                // You can handle success, e.g., show a success message
+              },
+              (error) => {
+                console.error('Error updating employee', error);
+                // You can handle errors, e.g., show an error message
+              }
+            );
+          },
+          (error) => {
+            console.error('Error uploading files', error);
+            // You can handle errors, e.g., show an error message
+          }
+        );
+      } else {
+        // No files to upload, proceed with updating employee data
+        this.employeeService.updateEmployee(userId, formData).subscribe(
+          (updatedEmployee) => {
+            console.log('Employee updated successfully', updatedEmployee);
+            // You can handle success, e.g., show a success message
+          },
+          (error) => {
+            console.error('Error updating employee', error);
+            // You can handle errors, e.g., show an error message
+          }
+        );
+      }
     } else {
       console.error('User ID not found in the token.');
       // Handle the case where user ID is not found in the token
     }
+  }
+
+  private uploadFiles(files: File[]): Observable<string[]> {
+    const uploadObservables: Observable<any>[] = [];
+
+    files.forEach((file) => {
+      uploadObservables.push(this.fileUploadService.uploadFile(file));
+    });
+
+    return forkJoin(uploadObservables);
   }
 
   private extractWorkScheduleFromForm(): any[] {
