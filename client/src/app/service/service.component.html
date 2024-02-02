@@ -46,8 +46,8 @@
       <td>{{ service.duration }}</td>
       <td>{{ service.commissionRate }}</td>
       <td>
-        <button (click)="toggleEdit(i)">Modify</button>
-        <button (click)="deleteService(service._id)">Delete</button>
+        <button (click)="toggleEdit(i)">Modifier</button>
+        <button (click)="deleteService(service._id)">Supprimer</button>
       </td>
     </tr>
     <ng-template #editRow>
@@ -57,8 +57,8 @@
         <td><input type="number" [(ngModel)]="service.duration" /></td>
         <td><input type="number" [(ngModel)]="service.commissionRate" /></td>
         <td>
-          <button (click)="updateService(service)">Save</button>
-          <button (click)="cancelEdit(service)">Cancel</button>
+          <button (click)="updateService(service)">Enregistrer</button>
+          <button (click)="cancelEdit(service)">Annuler</button>
         </td>
       </tr>
     </ng-template>
