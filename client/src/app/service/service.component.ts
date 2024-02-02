@@ -65,4 +65,28 @@ export class ServiceComponent  implements OnInit{
       }
     );
   }
+
+  toggleEdit(index: number) {
+    this.services[index].isEditing = true;
+  }
+
+  cancelEdit(service: any) {
+    service.isEditing = false;
+  }
+
+  updateService(service: any) {
+    // Call your service to update the service
+    this.serviceService.updateService(service._id, service).subscribe(
+      () => {
+        console.log('Service updated successfully');
+        // Refresh the list of services after updating
+        this.getServices();
+      },
+      (error) => {
+        console.error('Error updating service', error);
+        // Handle error, show an error message, etc.
+      }
+    );
+    service.isEditing = false;
+  }
 }
