@@ -16,6 +16,7 @@ import {LoginComponent} from "./login/login.component";
 import {AuthService} from "./services/auth.service";
 import {HomeEmployeeComponent} from "./home-employee/home-employee.component";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { HomeManagerComponent } from './home-manager/home-manager.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     SignupCodeComponent,
     HomeClientComponent,
     HomeEmployeeComponent,
-    LoginComponent
+    LoginComponent,
+    HomeManagerComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule, DragDropModule,MatIconModule,],
   providers: [AuthService, provideAnimationsAsync()],
