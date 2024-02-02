@@ -96,6 +96,7 @@ export class HomeEmployeeComponent implements OnInit {
             firstName: employee.userInfo.firstName,
             lastName: employee.userInfo.lastName,
             email: employee.userInfo.email,
+            picture: employee.userInfo.picture,
             workSchedule: {
               Monday: {
                 startTime: employee.workSchedule.find((day: { day: string }) => day.day === 'Monday')?.startTime || '',
@@ -191,7 +192,7 @@ export class HomeEmployeeComponent implements OnInit {
         this.employeeService.updateEmployee(userId, formData).subscribe(
           (updatedEmployee) => {
             console.log('Employee updated successfully', updatedEmployee);
-            // You can handle success, e.g., show a success message
+            window.location.reload();
           },
           (error) => {
             console.error('Error updating employee', error);

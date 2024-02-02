@@ -20,7 +20,7 @@ async function getUserById(req, res, next) {
 
 async function updateUser(req, res, next) {
     const userId = req.params.id;
-    const { email, password, role, firstName, lastName, birthday } = req.body;
+    const { email, password, role, firstName, lastName, birthday, images } = req.body;
 
     try {
         const user = await User.findById(userId);
@@ -36,6 +36,7 @@ async function updateUser(req, res, next) {
         user.firstName = firstName || user.firstName;
         user.lastName = lastName || user.lastName;
         user.birthday = birthday || user.birthday;
+        user.picture = images[0].fileNames[0] || user.picture;
 
         req["user"] = await user.save();
         next();
