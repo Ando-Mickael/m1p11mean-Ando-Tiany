@@ -16,7 +16,7 @@ export class ServiceComponent  implements OnInit{
   constructor(private serviceService: ServiceService) {}
 
   ngOnInit() {
-    this.loadServices();
+    this.getServices();
   }
 
   onSubmit() {
@@ -31,7 +31,7 @@ export class ServiceComponent  implements OnInit{
       (createdService) => {
         console.log('Service created successfully', createdService);
         // Refresh the services after creating a new one
-        this.loadServices();
+        this.getServices();
       },
       (error) => {
         console.error('Error creating service', error);
@@ -40,7 +40,7 @@ export class ServiceComponent  implements OnInit{
     );
   }
 
-  private loadServices() {
+  private getServices() {
     this.serviceService.getServices().subscribe(
       (services) => {
         this.services = services;
@@ -48,6 +48,20 @@ export class ServiceComponent  implements OnInit{
       (error) => {
         console.error('Error loading services', error);
         // You can handle errors, e.g., show an error message
+      }
+    );
+  }
+
+  deleteService(id: string) {
+    this.serviceService.deleteService(id).subscribe(
+      () => {
+        console.log('Service deleted successfully');
+        // Optional: Refresh the list of services after deletion
+        this.getServices();
+      },
+      (error) => {
+        console.error('Error deleting service', error);
+        // Handle error, show an error message, etc.
       }
     );
   }

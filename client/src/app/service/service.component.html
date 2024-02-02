@@ -43,6 +43,9 @@
     <td>{{ service.price }}</td>
     <td>{{ service.duration }}</td>
     <td>{{ service.commissionRate }}</td>
+    <td>
+      <button (click)="deleteService(service._id)">Delete</button>
+    </td>
   </tr>
   </tbody>
 </table>
