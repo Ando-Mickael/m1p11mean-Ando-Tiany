@@ -99,7 +99,7 @@ import { ServiceService } from '../services/service.service';
     </table>
   `,
 })
-export class ServiceComponent implements OnInit {
+export class ManagerServiceComponent implements OnInit {
   serviceName: string = '';
   servicePrice: number = 0;
   serviceDuration: number = 0;
