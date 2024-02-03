@@ -1,0 +1,48 @@
+<div>
+  <h2>Create a New Service</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Nom:</label>
+      <input type="text" id="name" [(ngModel)]="serviceName" name="name" required />
+    </div>
+
+    <div class="form-group">
+      <label for="price">Prix:</label>
+      <input type="number" id="price" [(ngModel)]="servicePrice" name="price" required />
+    </div>
+
+    <div class="form-group">
+      <label for="duration">Durée:</label>
+      <input type="number" id="duration" [(ngModel)]="serviceDuration" name="duration" required />
+    </div>
+
+    <div class="form-group">
+      <label for="commissionRate">Commission:</label>
+      <input type="number" id="commissionRate" [(ngModel)]="serviceCommissionRate" name="commissionRate" required />
+    </div>
+
+    <button type="submit">Créer le service</button>
+  </form>
+</div>
+
+<hr>
+
+<h2>Toutes les Services</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Nom</th>
+    <th>Prix</th>
+    <th>Durée</th>
+    <th>Commission</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let service of services">
+    <td>{{ service.name }}</td>
+    <td>{{ service.price }}</td>
+    <td>{{ service.duration }}</td>
+    <td>{{ service.commissionRate }}</td>
+  </tr>
+  </tbody>
+</table>

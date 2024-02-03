@@ -26,7 +26,7 @@ export class LoginComponent {
         .subscribe(
           (response) => {
             localStorage.setItem('token', response.token);
-            this.router.navigate(['/client']);
+            this.router.navigate([`/${ response.role }`]);
           },
           (error) => {
             this.errorMessage = error.error.message;
