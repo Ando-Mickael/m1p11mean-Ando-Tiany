@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
       <thead>
         <th>Last name</th>
         <th>First name</th>
+        <th>Temps moyen de travail</th>
         <th></th>
       </thead>
       <tbody>
@@ -16,6 +17,7 @@ import { Component } from '@angular/core';
             <a href="/manager/employees/{{ user._id }}">{{ user.lastName }}</a>
           </td>
           <td>{{ user.firstName }}</td>
+          <td>{{ user.averageWorkDuration }}</td>
           <td><button (click)="deleteUser(user._id)">Delete</button></td>
         </tr>
       </tbody>
