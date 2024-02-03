@@ -9,8 +9,9 @@ import { HomeComponent } from './home.component';
 import { LoginComponent } from './login/login.component';
 import { ManagerEmployeeComponent } from './manager/manager-employee.component';
 import { ManagerEmployeesComponent } from './manager/manager-employees.component';
-import { ManagerFormEmployeeComponent } from './manager/manager-form-employee.component';
+import { ManagerFormSpendingComponent } from './manager/manager-form-spending.component';
 import { ManagerHomeComponent } from './manager/manager-home.component';
+import { ManagerSpendingsComponent } from './manager/manager-spendings.component';
 import { ServiceComponent } from './service/service.component';
 
 const routes: Routes = [
@@ -22,7 +23,8 @@ const routes: Routes = [
   { path: 'managers', component: ManagerHomeComponent },
   { path: 'manager/employees', component: ManagerEmployeesComponent },
   { path: 'manager/employees/:id', component: ManagerEmployeeComponent },
-  { path: 'manager/form-employee', component: ManagerFormEmployeeComponent },
+  { path: 'manager/spendings', component: ManagerSpendingsComponent },
+  { path: 'manager/form-spending', component: ManagerFormSpendingComponent },
   { path: 'employee', component: HomeEmployeeComponent },
   { path: 'manager', component: HomeManagerComponent },
   { path: 'services', component: ServiceComponent },
