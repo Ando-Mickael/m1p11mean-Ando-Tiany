@@ -9,15 +9,15 @@ import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { LoginComponent } from './auth/login/login.component';
 import { SignupCodeComponent } from './auth/signup/signup-code.component';
 import { SignupComponent } from './auth/signup/signup.component';
-import { HomeClientComponent } from './home-client/home-client.component';
-import { HomeEmployeeComponent } from './home-employee/home-employee.component';
-import { HomeManagerComponent } from './home-manager/home-manager.component';
-import { HomeComponent } from './home.component';
-import { LoginComponent } from './login/login.component';
+import { ClientModule } from './client/client.module';
+import { HomeComponent } from './core/home.component';
+import { EmployeeModule } from './employee/employee.module';
+import { ServiceComponent } from './manager/manager-service.component';
+import { ManagerSpecialOfferComponent } from './manager/manager-special-offer.component';
 import { ManagerModule } from './manager/manager.module';
-import { ServiceComponent } from './service/service.component';
 import { AuthService } from './services/auth.service';
 
 @NgModule({
@@ -26,10 +26,8 @@ import { AuthService } from './services/auth.service';
     HomeComponent,
     SignupComponent,
     SignupCodeComponent,
-    HomeClientComponent,
-    HomeEmployeeComponent,
     LoginComponent,
-    HomeManagerComponent,
+    ManagerSpecialOfferComponent,
     ServiceComponent,
   ],
   imports: [
@@ -38,9 +36,11 @@ import { AuthService } from './services/auth.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ManagerModule,
     DragDropModule,
     MatIconModule,
+    ManagerModule,
+    EmployeeModule,
+    ClientModule,
   ],
   providers: [AuthService, provideAnimationsAsync()],
   bootstrap: [AppComponent],

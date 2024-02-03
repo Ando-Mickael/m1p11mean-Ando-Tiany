@@ -9,6 +9,8 @@ import { Component } from '@angular/core';
       <br />
       <a href="login">Login</a>
     </div>
+
+    <footer></footer>
   `,
 })
 export class HomeComponent {}
