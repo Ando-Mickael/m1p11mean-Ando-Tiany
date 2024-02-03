@@ -35,14 +35,33 @@
     <th>Prix</th>
     <th>Durée</th>
     <th>Commission</th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let service of services">
-    <td>{{ service.name }}</td>
-    <td>{{ service.price }}</td>
-    <td>{{ service.duration }}</td>
-    <td>{{ service.commissionRate }}</td>
-  </tr>
+  <ng-container *ngFor="let service of services; let i = index">
+    <tr *ngIf="!service.isEditing; else editRow">
+      <td>{{ service.name }}</td>
+      <td>{{ service.price }}</td>
+      <td>{{ service.duration }}</td>
+      <td>{{ service.commissionRate }}</td>
+      <td>
+        <button (click)="toggleEdit(i)">Modifier</button>
+        <button (click)="deleteService(service._id)">Supprimer</button>
+      </td>
+    </tr>
+    <ng-template #editRow>
+      <tr>
+        <td><input type="text" [(ngModel)]="service.name" /></td>
+        <td><input type="number" [(ngModel)]="service.price" /></td>
+        <td><input type="number" [(ngModel)]="service.duration" /></td>
+        <td><input type="number" [(ngModel)]="service.commissionRate" /></td>
+        <td>
+          <button (click)="updateService(service)">Enregistrer</button>
+          <button (click)="cancelEdit(service)">Annuler</button>
+        </td>
+      </tr>
+    </ng-template>
+  </ng-container>
   </tbody>
 </table>
