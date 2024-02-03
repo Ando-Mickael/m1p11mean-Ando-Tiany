@@ -3,8 +3,36 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrl: './signup.component.css',
+  template: `
+    <form (ngSubmit)="onSubmit()">
+      <input
+        type="text"
+        name="firstName"
+        placeholder="First Name"
+        [(ngModel)]="signupData.firstName"
+      />
+      <input
+        type="text"
+        name="lastName"
+        placeholder="Last Name"
+        [(ngModel)]="signupData.lastName"
+      />
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        [(ngModel)]="signupData.email"
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        [(ngModel)]="signupData.password"
+      />
+
+      <button type="submit">Signup</button>
+    </form>
+  `,
 })
 export class SignupComponent {
   signupData: any = {

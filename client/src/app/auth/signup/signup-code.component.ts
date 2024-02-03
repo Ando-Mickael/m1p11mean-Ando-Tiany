@@ -3,8 +3,13 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup-code',
-  templateUrl: './signup-code.component.html',
-  styleUrl: './signup-code.component.css',
+  template: `
+    <form (ngSubmit)="onSubmit()">
+      <input type="text" name="code" placeholder="Code" [(ngModel)]="code" />
+      <button type="button" (click)="resendCode()">Resend code</button>
+      <button type="submit">Verify</button>
+    </form>
+  `,
 })
 export class SignupCodeComponent {
   code: string = '';
