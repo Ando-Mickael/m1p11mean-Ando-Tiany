@@ -11,7 +11,7 @@ import { ManagerEmployeeComponent } from './manager/manager-employee.component';
 import { ManagerEmployeesComponent } from './manager/manager-employees.component';
 import { ManagerFormSpendingComponent } from './manager/manager-form-spending.component';
 import { ManagerHomeComponent } from './manager/manager-home.component';
-import { ServiceComponent } from './manager/manager-service.component';
+import { ManagerServiceComponent } from './manager/manager-service.component';
 import { ManagerSpecialOfferComponent } from './manager/manager-special-offer.component';
 import { ManagerSpendingsComponent } from './manager/manager-spendings.component';
 
@@ -31,7 +31,7 @@ const routes: Routes = [
   { path: 'manager/spendings', component: ManagerSpendingsComponent },
   { path: 'manager/form-spending', component: ManagerFormSpendingComponent },
   { path: 'manager/special-offer', component: ManagerSpecialOfferComponent },
-  { path: 'manager/services', component: ServiceComponent },
+  { path: 'manager/services', component: ManagerServiceComponent },
   // employee
   { path: 'employee', component: EmployeeHomeComponent },
 ];
