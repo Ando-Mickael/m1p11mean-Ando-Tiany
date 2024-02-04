@@ -3,7 +3,19 @@ const User = require('../models/User');
 
 const getAppointments = async (req, res, next) => {
     try {
-        req['appointments'] = await Appointment.find();
+        req['appointments'] = await Appointment.find()
+            .populate({
+                path: 'userId',
+                select: '_id firstName lastName',
+            })
+            .populate({
+                path: 'employeeId',
+                select: '_id firstName lastName',
+            })
+            .populate({
+                path: 'serviceId',
+                select: 'name price duration commissionRate',
+            });
         next();
     } catch (error) {
         console.error('Error getting appointments', error);
@@ -25,10 +37,34 @@ const getAppointmentsByUserId = async (req, res, next) => {
 
         if (user.role === 'client') {
             // If the user is a client, get appointments where userId = id
-            appointments = await Appointment.find({ userId });
+            appointments = await Appointment.find({ userId })
+                .populate({
+                    path: 'userId',
+                    select: '_id firstName lastName',
+                })
+                .populate({
+                    path: 'employeeId',
+                    select: '_id firstName lastName',
+                })
+                .populate({
+                    path: 'serviceId',
+                    select: 'name price duration commissionRate',
+                });
         } else if (user.role === 'employee') {
             // If the user is an employee, get appointments where employeeId = id
-            appointments = await Appointment.find({ employeeId: userId });
+            appointments = await Appointment.find({ employeeId: userId })
+                .populate({
+                    path: 'userId',
+                    select: '_id firstName lastName',
+                })
+                .populate({
+                    path: 'employeeId',
+                    select: '_id firstName lastName',
+                })
+                .populate({
+                    path: 'serviceId',
+                    select: 'name price duration commissionRate',
+                });
         } else {
             return res.status(400).json({ error: 'Invalid user role' });
         }
