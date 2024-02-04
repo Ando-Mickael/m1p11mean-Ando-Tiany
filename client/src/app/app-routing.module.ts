@@ -4,7 +4,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignupCodeComponent } from './auth/signup/signup-code.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { ClientHomeComponent } from './client/client-home.component';
-import { ClientServicesComponent } from './client/client-home.component copy';
+import { ClientServicesComponent } from './client/client-services.component';
 import { HomeComponent } from './core/home.component';
 import { EmployeeHomeComponent } from './employee/employee-home.component';
 import { ManagerEmployeeComponent } from './manager/manager-employee.component';
