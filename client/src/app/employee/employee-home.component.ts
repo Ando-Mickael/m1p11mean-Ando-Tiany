@@ -1,23 +1,110 @@
-// home-employee.component.ts
-
-import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../services/auth.service';
-import {EmployeeService} from '../services/employee.service';
-import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MatFileUploadQueueService } from '../services/mat-file-upload-queue.service';
+import { Component, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { Observable, forkJoin } from 'rxjs';
+import { AuthService } from '../services/auth.service';
+import { EmployeeService } from '../services/employee.service';
 import { FileUploadService } from '../services/file-upload.service';
-import {forkJoin, Observable} from "rxjs";
+import { MatFileUploadQueueService } from '../services/mat-file-upload-queue.service';
 
 @Component({
-  selector: 'app-home-employee',
-  templateUrl: './home-employee.component.html',
-  styleUrls: ['./home-employee.component.css']
+  selector: 'employee-home',
+  template: `
+    <div *ngIf="employee">
+      <h2>Mon Profil</h2>
+
+      <form
+        [formGroup]="updateForm"
+        (ngSubmit)="onSubmit()"
+        enctype="multipart/form-data"
+      >
+        <div class="form-group">
+          <label for="image">Image:</label>
+          <div
+            cdkDropList
+            #imageList="cdkDropList"
+            [cdkDropListData]="employee.images"
+            [cdkDropListConnectedTo]="['imageList']"
+            (cdkDropListDropped)="onImageDropped($event)"
+          >
+            <div cdkDrag>
+              <img
+                [src]="
+                  'http://localhost:3000/uploads/' + employee.userInfo.picture
+                "
+                alt="Image"
+                width="100"
+                height="100"
+              />
+            </div>
+          </div>
+          <input
+            type="file"
+            (change)="onImageSelected($event)"
+            accept="image/*"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="firstName">Prénom:</label>
+          <input type="text" id="firstName" formControlName="firstName" />
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Nom:</label>
+          <input type="text" id="lastName" formControlName="lastName" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" formControlName="email" />
+        </div>
+
+        <div class="form-group">
+          <label for="workSchedule">Horaire de travail:</label>
+          <div *ngFor="let day of daysOfWeek">
+            <div>
+              {{ day }}:
+              <input
+                type="text"
+                [formControl]="getStartTimeControl(day)!"
+                placeholder="Heure de début"
+              />
+              -
+              <input
+                type="text"
+                [formControl]="getEndTimeControl(day)!"
+                placeholder="Heure de fin"
+              />
+            </div>
+          </div>
+        </div>
+        <button type="submit">Mettre à jour le profil</button>
+      </form>
+    </div>
+
+    <div *ngIf="!employee">
+      <p>Chargement des données de l'employé...</p>
+    </div>
+  `,
 })
-export class HomeEmployeeComponent implements OnInit {
+export class EmployeeHomeComponent implements OnInit {
   employee: any;
   updateForm: FormGroup;
-  daysOfWeek: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  daysOfWeek: string[] = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
 
   constructor(
     private authService: AuthService,
@@ -25,8 +112,7 @@ export class HomeEmployeeComponent implements OnInit {
     private formBuilder: FormBuilder,
     private fileUploadQueueService: MatFileUploadQueueService,
     private fileUploadService: FileUploadService
-
-) {
+  ) {
     this.updateForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -34,33 +120,33 @@ export class HomeEmployeeComponent implements OnInit {
       workSchedule: this.formBuilder.group({
         Monday: this.formBuilder.group({
           startTime: [''],
-          endTime: ['']
+          endTime: [''],
         }),
         Tuesday: this.formBuilder.group({
           startTime: [''],
-          endTime: ['']
+          endTime: [''],
         }),
         Wednesday: this.formBuilder.group({
           startTime: [''],
-          endTime: ['']
+          endTime: [''],
         }),
         Thursday: this.formBuilder.group({
           startTime: [''],
-          endTime: ['']
+          endTime: [''],
         }),
         Friday: this.formBuilder.group({
           startTime: [''],
-          endTime: ['']
+          endTime: [''],
         }),
         Saturday: this.formBuilder.group({
           startTime: [''],
-          endTime: ['']
+          endTime: [''],
         }),
         Sunday: this.formBuilder.group({
           startTime: [''],
-          endTime: ['']
-        })
-      })
+          endTime: [''],
+        }),
+      }),
       // Add more controls as needed
     });
     this.fileUploadQueueService.uploadQueue$.subscribe((uploadQueue) => {
@@ -80,7 +166,11 @@ export class HomeEmployeeComponent implements OnInit {
   }
 
   onImageDropped(event: CdkDragDrop<any[]>) {
-    moveItemInArray(this.employee.images, event.previousIndex, event.currentIndex);
+    moveItemInArray(
+      this.employee.images,
+      event.previousIndex,
+      event.currentIndex
+    );
   }
 
   loadEmployeeData() {
@@ -99,34 +189,76 @@ export class HomeEmployeeComponent implements OnInit {
             picture: employee.userInfo.picture,
             workSchedule: {
               Monday: {
-                startTime: employee.workSchedule.find((day: { day: string }) => day.day === 'Monday')?.startTime || '',
-                endTime: employee.workSchedule.find((day: { day: string }) => day.day === 'Monday')?.endTime || ''
+                startTime:
+                  employee.workSchedule.find(
+                    (day: { day: string }) => day.day === 'Monday'
+                  )?.startTime || '',
+                endTime:
+                  employee.workSchedule.find(
+                    (day: { day: string }) => day.day === 'Monday'
+                  )?.endTime || '',
               },
               Tuesday: {
-                startTime: employee.workSchedule.find((day: { day: string }) => day.day === 'Tuesday')?.startTime || '',
-                endTime: employee.workSchedule.find((day: { day: string }) => day.day === 'Tuesday')?.endTime || ''
+                startTime:
+                  employee.workSchedule.find(
+                    (day: { day: string }) => day.day === 'Tuesday'
+                  )?.startTime || '',
+                endTime:
+                  employee.workSchedule.find(
+                    (day: { day: string }) => day.day === 'Tuesday'
+                  )?.endTime || '',
               },
               Wednesday: {
-                startTime: employee.workSchedule.find((day: { day: string }) => day.day === 'Wednesday')?.startTime || '',
-                endTime: employee.workSchedule.find((day: { day: string }) => day.day === 'Wednesday')?.endTime || ''
+                startTime:
+                  employee.workSchedule.find(
+                    (day: { day: string }) => day.day === 'Wednesday'
+                  )?.startTime || '',
+                endTime:
+                  employee.workSchedule.find(
+                    (day: { day: string }) => day.day === 'Wednesday'
+                  )?.endTime || '',
               },
               Thursday: {
-                startTime: employee.workSchedule.find((day: { day: string }) => day.day === 'Thursday')?.startTime || '',
-                endTime: employee.workSchedule.find((day: { day: string }) => day.day === 'Thursday')?.endTime || ''
+                startTime:
+                  employee.workSchedule.find(
+                    (day: { day: string }) => day.day === 'Thursday'
+                  )?.startTime || '',
+                endTime:
+                  employee.workSchedule.find(
+                    (day: { day: string }) => day.day === 'Thursday'
+                  )?.endTime || '',
               },
               Friday: {
-                startTime: employee.workSchedule.find((day: { day: string }) => day.day === 'Friday')?.startTime || '',
-                endTime: employee.workSchedule.find((day: { day: string }) => day.day === 'Friday')?.endTime || ''
+                startTime:
+                  employee.workSchedule.find(
+                    (day: { day: string }) => day.day === 'Friday'
+                  )?.startTime || '',
+                endTime:
+                  employee.workSchedule.find(
+                    (day: { day: string }) => day.day === 'Friday'
+                  )?.endTime || '',
               },
               Saturday: {
-                startTime: employee.workSchedule.find((day: { day: string }) => day.day === 'Saturday')?.startTime || '',
-                endTime: employee.workSchedule.find((day: { day: string }) => day.day === 'Saturday')?.endTime || ''
+                startTime:
+                  employee.workSchedule.find(
+                    (day: { day: string }) => day.day === 'Saturday'
+                  )?.startTime || '',
+                endTime:
+                  employee.workSchedule.find(
+                    (day: { day: string }) => day.day === 'Saturday'
+                  )?.endTime || '',
               },
               Sunday: {
-                startTime: employee.workSchedule.find((day: { day: string }) => day.day === 'Sunday')?.startTime || '',
-                endTime: employee.workSchedule.find((day: { day: string }) => day.day === 'Sunday')?.endTime || ''
-              }
-            }
+                startTime:
+                  employee.workSchedule.find(
+                    (day: { day: string }) => day.day === 'Sunday'
+                  )?.startTime || '',
+                endTime:
+                  employee.workSchedule.find(
+                    (day: { day: string }) => day.day === 'Sunday'
+                  )?.endTime || '',
+              },
+            },
             // Update more controls as needed
           });
         },
@@ -154,7 +286,8 @@ export class HomeEmployeeComponent implements OnInit {
     const userId = token ? JSON.parse(atob(token.split('.')[1])).userId : null;
 
     if (userId) {
-      const formData: { [key: string]: any } = {  // Specify the type of formData
+      const formData: { [key: string]: any } = {
+        // Specify the type of formData
         email: this.updateForm.get('email')?.value,
         firstName: this.updateForm.get('firstName')?.value,
         lastName: this.updateForm.get('lastName')?.value,
@@ -218,11 +351,13 @@ export class HomeEmployeeComponent implements OnInit {
 
   private extractWorkScheduleFromForm(): any[] {
     const workSchedule: any[] = [];
-    this.daysOfWeek.forEach(day => {
-      const startTime = this.updateForm.get(`workSchedule.${day}.startTime`)?.value;
+    this.daysOfWeek.forEach((day) => {
+      const startTime = this.updateForm.get(
+        `workSchedule.${day}.startTime`
+      )?.value;
       const endTime = this.updateForm.get(`workSchedule.${day}.endTime`)?.value;
       if (startTime !== '' && endTime !== '') {
-        workSchedule.push({day, startTime, endTime});
+        workSchedule.push({ day, startTime, endTime });
       }
     });
     return workSchedule;

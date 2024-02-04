@@ -1,33 +1,37 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LoginComponent } from './auth/login/login.component';
 import { SignupCodeComponent } from './auth/signup/signup-code.component';
 import { SignupComponent } from './auth/signup/signup.component';
-import { HomeClientComponent } from './home-client/home-client.component';
-import { HomeEmployeeComponent } from './home-employee/home-employee.component';
-import { HomeManagerComponent } from './home-manager/home-manager.component';
-import { HomeComponent } from './home.component';
-import { LoginComponent } from './login/login.component';
+import { ClientHomeComponent } from './client/client-home.component';
+import { HomeComponent } from './core/home.component';
+import { EmployeeHomeComponent } from './employee/employee-home.component';
 import { ManagerEmployeeComponent } from './manager/manager-employee.component';
 import { ManagerEmployeesComponent } from './manager/manager-employees.component';
 import { ManagerFormSpendingComponent } from './manager/manager-form-spending.component';
 import { ManagerHomeComponent } from './manager/manager-home.component';
+import { ServiceComponent } from './manager/manager-service.component';
+import { ManagerSpecialOfferComponent } from './manager/manager-special-offer.component';
 import { ManagerSpendingsComponent } from './manager/manager-spendings.component';
-import { ServiceComponent } from './service/service.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
+  // auth
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup-code', component: SignupCodeComponent },
-  { path: 'client', component: HomeClientComponent },
-  { path: 'managers', component: ManagerHomeComponent },
+  // client
+  { path: 'client', component: ClientHomeComponent },
+  // manager
+  { path: 'manager', component: ManagerHomeComponent },
   { path: 'manager/employees', component: ManagerEmployeesComponent },
   { path: 'manager/employees/:id', component: ManagerEmployeeComponent },
   { path: 'manager/spendings', component: ManagerSpendingsComponent },
   { path: 'manager/form-spending', component: ManagerFormSpendingComponent },
-  { path: 'employee', component: HomeEmployeeComponent },
-  { path: 'manager', component: HomeManagerComponent },
-  { path: 'services', component: ServiceComponent },
+  { path: 'manager/special-offer', component: ManagerSpecialOfferComponent },
+  { path: 'manager/services', component: ServiceComponent },
+  // employee
+  { path: 'employee', component: EmployeeHomeComponent },
 ];
 
 @NgModule({

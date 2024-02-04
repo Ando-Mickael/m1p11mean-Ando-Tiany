@@ -16,6 +16,12 @@ import { Component } from '@angular/core';
       <p>
         <a href="manager/form-spending">Add spending</a>
       </p>
+      <p>
+        <a href="manager/services">Services</a>
+      </p>
+      <p>
+        <a href="manager/special-offer">Special offer</a>
+      </p>
     </div>
   `,
 })
