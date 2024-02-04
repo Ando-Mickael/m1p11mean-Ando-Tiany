@@ -4,6 +4,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignupCodeComponent } from './auth/signup/signup-code.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { ClientHomeComponent } from './client/client-home.component';
+import { ClientServicesComponent } from './client/client-home.component copy';
 import { HomeComponent } from './core/home.component';
 import { EmployeeHomeComponent } from './employee/employee-home.component';
 import { ManagerEmployeeComponent } from './manager/manager-employee.component';
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'signup-code', component: SignupCodeComponent },
   // client
   { path: 'client', component: ClientHomeComponent },
+  { path: 'client/services', component: ClientServicesComponent },
   // manager
   { path: 'manager', component: ManagerHomeComponent },
   { path: 'manager/employees', component: ManagerEmployeesComponent },
