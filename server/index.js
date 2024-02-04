@@ -26,6 +26,7 @@ app.use("/upload", require("./routes/upload.route"));
 app.use("/special-offers", require("./routes/specialOffers.route"));
 app.use("/services", require("./routes/service.route"));
 app.use("/spendings", require("./routes/spending.route"));
+app.use("/appointments", require("./routes/appointment.route"));
 
 // start server
 app.listen(port);

@@ -1,0 +1,9 @@
+const router = require("express").Router();
+const appointmentController = require("../controllers/appointment.controller");
+const {sendResponse} = require("../utils/middlewares");
+
+router.get("/", appointmentController.getAppointments, sendResponse("appointments"));
+router.get("/:id", appointmentController.getAppointmentsByUserId, sendResponse("appointments"));
+
+
+module.exports = router;
