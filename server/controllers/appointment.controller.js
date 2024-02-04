@@ -161,18 +161,28 @@ async function calculateMonthlyRevenue(req, res, next) {
 }
 
 async function calculateDailyRevenue(req, res, next) {
-    try {
-        const incomeResult = req.income;
-        const expenseResult = req.expenses;
+    const incomeResult = req.income;
+    const expenseResult = req.expenses;
 
-        const revenue = calculateRevenue(incomeResult, expenseResult);
+    const revenue = [];
 
-        req.revenue = revenue;
-        next();
-    } catch (error) {
-        console.error('Error in calculateDailyRevenue:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
+    // Determine the number of days in the month (adjust this based on your needs)
+    const numberOfDaysInMonth = 31;
+
+    for (let day = 1; day <= numberOfDaysInMonth; day++) {
+        const income = incomeResult.find(item => item.day === day);
+        const expense = expenseResult.find(item => item.day === day);
+
+        const totalIncome = income ? income.totalIncome : 0;
+        const totalExpense = expense ? expense.totalAmount : 0;
+
+        const netRevenue = totalIncome - totalExpense;
+
+        revenue.push({ day, totalRevenue: netRevenue });
     }
+
+    req.revenue = revenue;
+    next();
 }
 
 function calculateRevenue(incomeResult, expenseResult) {
