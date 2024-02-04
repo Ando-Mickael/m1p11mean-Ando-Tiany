@@ -83,7 +83,7 @@ async function getMonthlyIncome(req, res, next) {
         const { year } = req.params;
 
         const allAppointments = await Appointment.find().populate('serviceId');
-        console.log(allAppointments)
+
         // Filter appointments for the specified year
         const filteredAppointments = allAppointments.filter(appointment => {
             const appointmentYear = new Date(appointment.date).getFullYear();
@@ -103,7 +103,7 @@ async function getMonthlyIncome(req, res, next) {
 
             return result;
         }, {});
-        req.result =Object.values(monthlyIncome).sort((a, b) => a.month - b.month);
+        req.income =Object.values(monthlyIncome).sort((a, b) => a.month - b.month);
         next();
     } catch (error) {
         console.error('Error in getMonthlyIncome:', error);
@@ -139,7 +139,7 @@ async function getDailyIncome(req, res, next) {
         }, {});
 
 
-        req.result =Object.values(dailyIncome).sort((a, b) => a.day - b.day);
+        req.income =Object.values(dailyIncome).sort((a, b) => a.day - b.day);
         next();
     } catch (error) {
         console.error('Error in getDailyIncome:', error);
@@ -147,10 +147,62 @@ async function getDailyIncome(req, res, next) {
     }
 }
 
+async function calculateMonthlyRevenue(req, res, next) {
+    try {
+        const incomeResult = req.income;
+        const expenseResult = req.expenses;
+
+        req.revenue = calculateRevenue(incomeResult, expenseResult);
+        next();
+    } catch (error) {
+        console.error('Error in calculateMonthlyRevenue:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+async function calculateDailyRevenue(req, res, next) {
+    try {
+        const incomeResult = req.income;
+        const expenseResult = req.expenses;
+
+        const revenue = calculateRevenue(incomeResult, expenseResult);
+
+        req.revenue = revenue;
+        next();
+    } catch (error) {
+        console.error('Error in calculateDailyRevenue:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+function calculateRevenue(incomeResult, expenseResult) {
+    // Assuming both incomeResult and expenseResult are arrays with objects containing { month, totalIncome } or { day, totalExpense }
+    console.log("income", incomeResult);
+    console.log("expense", expenseResult);
+    const revenue = [];
+
+    for (let i = 0; i < Math.max(incomeResult.length, expenseResult.length); i++) {
+        const monthOrDay = i + 1;
+
+        const income = incomeResult.find(item => item.month === monthOrDay);
+        const expense = expenseResult.find(item => item.month === monthOrDay || item.day === monthOrDay);
+
+        const totalIncome = income ? income.totalIncome : 0;
+        const totalExpense = expense ? expense.totalAmount : 0; // Corrected line
+
+        const netRevenue = totalIncome - totalExpense;
+
+        revenue.push({ month: monthOrDay, totalRevenue: netRevenue });
+    }
+
+    return revenue;
+}
 
 module.exports = {
     getAppointments,
     getAppointmentsByUserId,
     getMonthlyIncome,
     getDailyIncome,
+    calculateMonthlyRevenue,
+    calculateDailyRevenue,
 };

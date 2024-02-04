@@ -52,7 +52,7 @@ async function getMonthlySpendings(req, res, next) {
       },
     ]);
 
-    req.result = result;
+    req.expenses = result;
     next();
   } catch (error) {
     res.status(500).json({ message: 'Internal Server Error' });
@@ -90,7 +90,7 @@ async function getDailySpendings(req, res, next) {
       },
     ]);
 
-    req.result = result;
+    req.expenses = result;
     next();
   } catch (error) {
     res.status(500).json({ message: 'Internal Server Error' });
