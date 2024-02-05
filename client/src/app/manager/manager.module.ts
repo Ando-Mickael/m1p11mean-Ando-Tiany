@@ -11,6 +11,8 @@ import { ManagerServiceComponent } from './manager-service.component';
 import { ManagerSpecialOfferComponent } from './manager-special-offer.component';
 import { ManagerSpendingsComponent } from './manager-spendings.component';
 import {ManagerStatistiquesComponent} from "./manager-statistiques.component";
+import {ManagerDailyRevenueComponent} from "./manager-daily-revenue.component";
+import {ManagerMonthlyRevenueComponent} from "./manager-monthly-revenue.component";
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import {ManagerStatistiquesComponent} from "./manager-statistiques.component";
     ManagerFormSpendingComponent,
     ManagerSpecialOfferComponent,
     ManagerServiceComponent,
-    ManagerStatistiquesComponent
+    ManagerStatistiquesComponent,
+    ManagerDailyRevenueComponent,
+    ManagerMonthlyRevenueComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, NgChartsModule],
 })
