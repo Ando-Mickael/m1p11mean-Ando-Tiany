@@ -22,6 +22,9 @@ import { Component } from '@angular/core';
       <p>
         <a href="manager/special-offer">Special offer</a>
       </p>
+      <p>
+        <a href="manager/statistiques">Statistiques</a>
+      </p>
     </div>
   `,
 })

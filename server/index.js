@@ -27,6 +27,7 @@ app.use("/special-offers", require("./routes/specialOffers.route"));
 app.use("/services", require("./routes/service.route"));
 app.use("/spendings", require("./routes/spending.route"));
 app.use("/appointments", require("./routes/appointment.route"));
+app.use("/sales", require("./routes/sales.route"));
 
 // start server
 app.listen(port);

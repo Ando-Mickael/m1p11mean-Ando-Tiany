@@ -14,6 +14,7 @@ import { ManagerHomeComponent } from './manager/manager-home.component';
 import { ManagerServiceComponent } from './manager/manager-service.component';
 import { ManagerSpecialOfferComponent } from './manager/manager-special-offer.component';
 import { ManagerSpendingsComponent } from './manager/manager-spendings.component';
+import {ManagerStatistiquesComponent} from "./manager/manager-statistiques.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: 'manager/form-spending', component: ManagerFormSpendingComponent },
   { path: 'manager/special-offer', component: ManagerSpecialOfferComponent },
   { path: 'manager/services', component: ManagerServiceComponent },
+  { path: 'manager/statistiques', component: ManagerStatistiquesComponent },
   // employee
   { path: 'employee', component: EmployeeHomeComponent },
 ];

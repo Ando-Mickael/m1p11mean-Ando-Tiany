@@ -88,6 +88,8 @@ import { MatFileUploadQueueService } from '../services/mat-file-upload-queue.ser
       </form>
     </div>
 
+    <employee-appointments/>
+
     <div *ngIf="!employee">
       <p>Chargement des données de l'employé...</p>
     </div>

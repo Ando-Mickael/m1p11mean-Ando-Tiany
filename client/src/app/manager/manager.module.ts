@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { NgChartsModule } from 'ng2-charts';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ManagerEmployeeComponent } from './manager-employee.component';
 import { ManagerEmployeesComponent } from './manager-employees.component';
@@ -9,6 +10,9 @@ import { ManagerHomeComponent } from './manager-home.component';
 import { ManagerServiceComponent } from './manager-service.component';
 import { ManagerSpecialOfferComponent } from './manager-special-offer.component';
 import { ManagerSpendingsComponent } from './manager-spendings.component';
+import {ManagerStatistiquesComponent} from "./manager-statistiques.component";
+import {ManagerDailyRevenueComponent} from "./manager-daily-revenue.component";
+import {ManagerMonthlyRevenueComponent} from "./manager-monthly-revenue.component";
 
 @NgModule({
   declarations: [
@@ -20,7 +24,10 @@ import { ManagerSpendingsComponent } from './manager-spendings.component';
     ManagerFormSpendingComponent,
     ManagerSpecialOfferComponent,
     ManagerServiceComponent,
+    ManagerStatistiquesComponent,
+    ManagerDailyRevenueComponent,
+    ManagerMonthlyRevenueComponent
   ],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, NgChartsModule],
 })
 export class ManagerModule {}
