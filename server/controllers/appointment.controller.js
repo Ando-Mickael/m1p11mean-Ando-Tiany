@@ -242,6 +242,23 @@ async function getByUserId(req, res) {
   }
 }
 
+async function confirmedAppointment(req, res) {
+  const { id } = req.params;
+
+  try {
+    const appointment = await Appointment.findById(id);
+
+    if (!appointment) {
+      res.status(404).json({ message: "Appointment not found" });
+    }
+    appointment.status = "confirmed";
+    await appointment.save();
+    res.status(200).json({ message: "Appointment confirmed successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 module.exports = {
   getAppointments,
   getAppointmentsByUserId,
@@ -251,4 +268,5 @@ module.exports = {
   calculateDailyRevenue,
   create,
   getByUserId,
+  confirmedAppointment,
 };

@@ -9,12 +9,16 @@ import { Component } from '@angular/core';
           <tr>
             <th>Date</th>
             <th>Services</th>
+            <th>Status</th>
+            <th></th>
           </tr>
         </thead>
         <tbody *ngFor="let appointment of appointments">
           <tr>
             <td>{{ appointment.date }}</td>
             <td>{{ appointment.serviceIds | json }}</td>
+            <td>{{ appointment.status }}</td>
+            <td><a href="/client/payment/{{ appointment._id }}">Pay</a></td>
           </tr>
         </tbody>
       </table>

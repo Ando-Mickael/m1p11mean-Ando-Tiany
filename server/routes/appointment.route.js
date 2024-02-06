@@ -16,4 +16,6 @@ router.post("/", appointmentController.create);
 
 router.get("/users/:userId", appointmentController.getByUserId);
 
+router.put("/confirm/:id", appointmentController.confirmedAppointment);
+
 module.exports = router;

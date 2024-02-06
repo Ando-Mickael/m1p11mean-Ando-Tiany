@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { ClientHistoryComponent } from './client-history.component';
 import { ClientHomeComponent } from './client-home.component';
+import { ClientPaymentComponent } from './client-payment.component';
 import { ClientServicesComponent } from './client-services.component';
 import { PreferencesComponent } from './preferences.component';
 
@@ -13,6 +14,7 @@ import { PreferencesComponent } from './preferences.component';
     ClientServicesComponent,
     PreferencesComponent,
     ClientHistoryComponent,
+    ClientPaymentComponent,
   ],
   imports: [CommonModule, FormsModule],
   providers: [UserService],
