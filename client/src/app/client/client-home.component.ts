@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'client-home',
-  template: ` <p>home-client works!</p> `,
+  template: `
+    <ul>
+      <li><a href="/client/services">Services</a></li>
+    </ul>
+  `,
 })
 export class ClientHomeComponent {}

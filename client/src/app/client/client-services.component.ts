@@ -4,20 +4,68 @@ import { Component } from '@angular/core';
   selector: 'client-services',
   template: `
     <div>
-      <div *ngIf="!isLoading">
+      <div>
+        <h2>Cart</h2>
+
+        <div *ngIf="cart.length">
+          <ul *ngFor="let id of cart; let i = index">
+            <li>
+              {{ id }}
+              <button (click)="removeFromCart(i)">Remove</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div *ngIf="!servicesLoading">
+        <h2>Services</h2>
         <ul *ngFor="let service of services">
-          <li>{{ service.name }}</li>
+          <li>
+            {{ service.name }}
+            <button (click)="addToCart(service._id)">Add to Cart</button>
+          </li>
         </ul>
+
+        <form (submit)="onSubmit($event)">
+          <div>
+            <input type="datetime-local" name="date" [(ngModel)]="date" />
+          </div>
+          <div *ngIf="!employeesLoading">
+            <select name="employeeId" [(ngModel)]="employeeId" id="">
+              <option *ngFor="let employee of employees" [value]="employee._id">
+                {{ employee.firstName }} {{ employee.lastName }}
+              </option>
+            </select>
+          </div>
+          <button type="submit">Take appointment</button>
+        </form>
       </div>
     </div>
   `,
 })
 export class ClientServicesComponent {
   services: any[] = [];
-  isLoading = true;
+  servicesLoading = true;
+
+  employees: any[] = [];
+  employeesLoading = true;
+
+  date: string = '';
+  employeeId: string = '';
+
+  cart = [];
+
+  constructor() {
+    this.clearCart();
+  }
 
   ngOnInit() {
     this.getServices();
+    this.getEmployees();
+  }
+
+  clearCart() {
+    localStorage.removeItem('cart');
   }
 
   getServices() {
@@ -25,7 +73,68 @@ export class ClientServicesComponent {
       .then((response) => response.json())
       .then((data) => {
         this.services = data;
-        this.isLoading = false;
+        this.servicesLoading = false;
       });
+  }
+
+  getEmployees() {
+    fetch('http://localhost:3000/employees')
+      .then((response) => response.json())
+      .then((data) => {
+        this.employees = data;
+        this.employeesLoading = false;
+      });
+  }
+
+  addToCart(id: string) {
+    let cart = JSON.parse(localStorage.getItem('cart') as string);
+
+    if (cart) {
+      cart.push(id);
+      localStorage.setItem('cart', JSON.stringify(cart));
+    } else {
+      localStorage.setItem('cart', JSON.stringify([id]));
+    }
+    this.refreshCart();
+
+    console.log(this.cart);
+  }
+
+  refreshCart() {
+    let cart = JSON.parse(localStorage.getItem('cart') as string);
+    if (cart) {
+      this.cart = cart;
+    } else {
+      this.cart = [];
+    }
+  }
+
+  removeFromCart(index: number) {
+    let cart = JSON.parse(localStorage.getItem('cart') as string);
+    cart.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    this.refreshCart();
+  }
+
+  onSubmit(event: Event) {
+    event.preventDefault();
+
+    let data = {
+      serviceIds: JSON.parse(localStorage.getItem('cart') as string),
+      userId: localStorage.getItem('userId'),
+      date: this.date,
+      employeeId: this.employeeId,
+    };
+
+    fetch('http://localhost:3000/appointments', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }).then(() => {
+      this.clearCart();
+      this.refreshCart();
+    });
   }
 }

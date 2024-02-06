@@ -76,7 +76,9 @@ export class LoginComponent {
       const { email, password } = this.loginForm.value;
       this.authService.login(email, password).subscribe(
         (response) => {
+          console.log(response);
           localStorage.setItem('token', response.token);
+          localStorage.setItem('userId', response.userId);
           this.router.navigate([`/${response.role}`]);
         },
         (error) => {
