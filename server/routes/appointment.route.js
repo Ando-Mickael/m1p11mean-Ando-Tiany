@@ -14,4 +14,6 @@ router.get(
 );
 router.post("/", appointmentController.create);
 
+router.get("/users/:userId", appointmentController.getByUserId);
+
 module.exports = router;

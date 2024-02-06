@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupCodeComponent } from './auth/signup/signup-code.component';
 import { SignupComponent } from './auth/signup/signup.component';
+import { ClientHistoryComponent } from './client/client-history.component';
 import { ClientHomeComponent } from './client/client-home.component';
 import { ClientServicesComponent } from './client/client-services.component';
 import { HomeComponent } from './core/home.component';
@@ -14,7 +15,7 @@ import { ManagerHomeComponent } from './manager/manager-home.component';
 import { ManagerServiceComponent } from './manager/manager-service.component';
 import { ManagerSpecialOfferComponent } from './manager/manager-special-offer.component';
 import { ManagerSpendingsComponent } from './manager/manager-spendings.component';
-import {ManagerStatistiquesComponent} from "./manager/manager-statistiques.component";
+import { ManagerStatistiquesComponent } from './manager/manager-statistiques.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,6 +26,7 @@ const routes: Routes = [
   // client
   { path: 'client', component: ClientHomeComponent },
   { path: 'client/services', component: ClientServicesComponent },
+  { path: 'client/history', component: ClientHistoryComponent },
   // manager
   { path: 'manager', component: ManagerHomeComponent },
   { path: 'manager/employees', component: ManagerEmployeesComponent },

@@ -231,6 +231,17 @@ function calculateRevenue(incomeResult, expenseResult) {
   return revenue;
 }
 
+async function getByUserId(req, res) {
+  const { userId } = req.params;
+
+  try {
+    const appointments = await Appointment.find({ userId });
+    res.status(200).json(appointments);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 module.exports = {
   getAppointments,
   getAppointmentsByUserId,
@@ -239,4 +250,5 @@ module.exports = {
   calculateMonthlyRevenue,
   calculateDailyRevenue,
   create,
+  getByUserId,
 };

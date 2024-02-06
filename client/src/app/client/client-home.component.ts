@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <ul>
       <li><a href="/client/services">Services</a></li>
+      <li><a href="/client/history">History</a></li>
     </ul>
     <client-preferences></client-preferences>
   `,
