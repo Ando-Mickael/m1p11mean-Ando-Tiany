@@ -1,5 +1,6 @@
 const Appointment = require("../models/Appointment");
 const User = require("../models/User");
+const { getMonthlyAppointments } = require("../services/appointment.service");
 
 const getAppointments = async (req, res, next) => {
   try {
@@ -259,6 +260,17 @@ async function confirmedAppointment(req, res) {
   }
 }
 
+async function totalMonthlyAppointments(req, res) {
+  const { year, month } = req.query;
+  try {
+    getMonthlyAppointments(Number(year), Number(month)).then((data) => {
+      res.json(data);
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 module.exports = {
   getAppointments,
   getAppointmentsByUserId,
@@ -269,4 +281,5 @@ module.exports = {
   create,
   getByUserId,
   confirmedAppointment,
+  totalMonthlyAppointments,
 };

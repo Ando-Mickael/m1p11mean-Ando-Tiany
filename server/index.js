@@ -20,6 +20,7 @@ app.use("/uploads", express.static("uploads"));
 // routes
 app.use("/", require("./routes"));
 app.use("/auth", require("./routes/auth.route"));
+app.use("/managers", require("./routes/manager.route"));
 app.use("/employees", require("./routes/employee.route"));
 app.use("/users", require("./routes/user.route"));
 app.use("/upload", require("./routes/upload.route"));
