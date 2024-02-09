@@ -94,7 +94,7 @@ async function getMonthlyIncome(req, res, next) {
   try {
     const { year } = req.params;
 
-    const allAppointments = await Appointment.find().populate("serviceIds");
+    const allAppointments = await Appointment.find({ status: "confirmed" }).populate("serviceIds");
 
     // Filter appointments for the specified year
     const filteredAppointments = allAppointments.filter((appointment) => {
@@ -131,7 +131,7 @@ async function getDailyIncome(req, res, next) {
   try {
     const { year, month } = req.params;
 
-    const allAppointments = await Appointment.find().populate("serviceIds");
+    const allAppointments = await Appointment.find({ status: "confirmed" }).populate("serviceIds");
 
     // Filter appointments for the specified year and month
     const filteredAppointments = allAppointments.filter((appointment) => {
