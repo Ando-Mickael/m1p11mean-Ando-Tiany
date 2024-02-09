@@ -94,7 +94,7 @@ async function getMonthlyIncome(req, res, next) {
   try {
     const { year } = req.params;
 
-    const allAppointments = await Appointment.find().populate("serviceId");
+    const allAppointments = await Appointment.find().populate("serviceIds");
 
     // Filter appointments for the specified year
     const filteredAppointments = allAppointments.filter((appointment) => {
@@ -105,18 +105,20 @@ async function getMonthlyIncome(req, res, next) {
     // Calculate monthly income
     const monthlyIncome = filteredAppointments.reduce((result, appointment) => {
       const month = new Date(appointment.date).getMonth() + 1; // Month is 0-indexed
-      const totalIncome = appointment.serviceId
-        ? appointment.serviceId.price
-        : 0;
 
-      if (!result[month]) {
-        result[month] = { month, totalIncome };
-      } else {
-        result[month].totalIncome += totalIncome;
-      }
+      appointment.serviceIds.forEach((service) => {
+        const totalIncome = service ? service.price : 0;
+
+        if (!result[month]) {
+          result[month] = { month, totalIncome };
+        } else {
+          result[month].totalIncome += totalIncome;
+        }
+      });
 
       return result;
     }, {});
+
     req.income = Object.values(monthlyIncome).sort((a, b) => a.month - b.month);
     next();
   } catch (error) {
@@ -129,30 +131,31 @@ async function getDailyIncome(req, res, next) {
   try {
     const { year, month } = req.params;
 
-    const allAppointments = await Appointment.find().populate("serviceId");
+    const allAppointments = await Appointment.find().populate("serviceIds");
 
     // Filter appointments for the specified year and month
     const filteredAppointments = allAppointments.filter((appointment) => {
       const appointmentYear = new Date(appointment.date).getFullYear();
       const appointmentMonth = new Date(appointment.date).getMonth() + 1; // Month is 0-indexed
       return (
-        appointmentYear.toString() === year &&
-        appointmentMonth.toString() === month
+          appointmentYear.toString() === year &&
+          appointmentMonth.toString() === month
       );
     });
 
     // Calculate daily income
     const dailyIncome = filteredAppointments.reduce((result, appointment) => {
       const day = new Date(appointment.date).getDate();
-      const totalIncome = appointment.serviceId
-        ? appointment.serviceId.price
-        : 0;
 
-      if (!result[day]) {
-        result[day] = { day, totalIncome };
-      } else {
-        result[day].totalIncome += totalIncome;
-      }
+      appointment.serviceIds.forEach((service) => {
+        const totalIncome = service ? service.price : 0;
+
+        if (!result[day]) {
+          result[day] = { day, totalIncome };
+        } else {
+          result[day].totalIncome += totalIncome;
+        }
+      });
 
       return result;
     }, {});
