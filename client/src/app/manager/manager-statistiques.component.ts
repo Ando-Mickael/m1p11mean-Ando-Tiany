@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'manager-statistiques',
@@ -7,10 +7,12 @@ import {Component} from "@angular/core";
       <p>Statistiques</p>
       <manager-daily-revenue></manager-daily-revenue>
       <manager-monthly-revenue></manager-monthly-revenue>
+      <div>
+        <h2>Total monthly appointments</h2>
+        <manager-total-monthly-appointments></manager-total-monthly-appointments>
+      </div>
     </div>
   `,
-  styles: []
+  styles: [],
 })
-export class ManagerStatistiquesComponent {
-
-}
+export class ManagerStatistiquesComponent {}
