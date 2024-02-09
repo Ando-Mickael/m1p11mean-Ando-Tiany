@@ -43,7 +43,7 @@ import { MatFileUploadQueueService } from '../services/mat-file-upload-queue.ser
               />
             </div>
           </div>
-          <div class="file-drop-zone" (drop)="onFileDrop($event)" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)">
+          <div class="file-drop-zone" (drop)="onFileDrop($event)" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (click)="triggerFileInput()">
             Drag and drop your file here or click to select
             <input type="file" id="file-upload" (change)="onImageSelected($event)" accept="image/*" hidden />
           </div>
@@ -226,6 +226,11 @@ export class EmployeeHomeComponent implements OnInit {
       this.previewUrl = reader.result; // This is the base64 image URL
     };
     reader.readAsDataURL(file);
+  }
+
+  triggerFileInput() {
+    // Use ViewChild if you have not already defined '#file-upload' input as a ViewChild
+    document.getElementById('file-upload')?.click();
   }
 
   onImageSelected(event: any) {
