@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SpecialOfferService } from '../services/special-offer.service';
+import { SpecialOfferService } from '../../services/special-offer.service';
 
 @Component({
   selector: 'manager-special-offer',

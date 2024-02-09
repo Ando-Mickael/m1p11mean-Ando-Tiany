@@ -9,14 +9,14 @@ import { ClientPaymentComponent } from './client/client-payment.component';
 import { ClientServicesComponent } from './client/client-services.component';
 import { HomeComponent } from './core/home.component';
 import { EmployeeHomeComponent } from './employee/employee-home.component';
-import { ManagerEmployeeComponent } from './manager/manager-employee.component';
-import { ManagerEmployeesComponent } from './manager/manager-employees.component';
-import { ManagerFormSpendingComponent } from './manager/manager-form-spending.component';
+import { ManagerStatistiquesComponent } from './manager/dashboard/manager-statistiques.component';
+import { ManagerEmployeeComponent } from './manager/employees/manager-employee.component';
+import { ManagerEmployeesComponent } from './manager/employees/manager-employees.component';
 import { ManagerHomeComponent } from './manager/manager-home.component';
-import { ManagerServiceComponent } from './manager/manager-service.component';
-import { ManagerSpecialOfferComponent } from './manager/manager-special-offer.component';
-import { ManagerSpendingsComponent } from './manager/manager-spendings.component';
-import { ManagerStatistiquesComponent } from './manager/manager-statistiques.component';
+import { ManagerServiceComponent } from './manager/services/manager-service.component';
+import { ManagerSpecialOfferComponent } from './manager/special-offers/manager-special-offer.component';
+import { ManagerFormSpendingComponent } from './manager/spendings/manager-form-spending.component';
+import { ManagerSpendingsComponent } from './manager/spendings/manager-spendings.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
