@@ -1,6 +1,26 @@
 // employee-appointments.component.ts
 import { Component, OnInit } from '@angular/core';
-import {AppointmentsService} from "../services/appointments.service";
+import { AppointmentsService } from '../services/appointments.service';
+
+interface Service {
+  _id: string;
+  name: string;
+  price: number;
+}
+
+interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+}
+
+interface Appointment {
+  _id: string;
+  userId: User;
+  date: Date;
+  serviceIds: Service[];
+  status: string;
+}
 
 @Component({
   selector: 'employee-appointments',
@@ -10,14 +30,20 @@ import {AppointmentsService} from "../services/appointments.service";
       <div class="appointments-container">
         <mat-card *ngFor="let appointment of appointments" class="appointment-card">
           <mat-card-header>
-            <mat-card-title>{{ appointment.serviceId.name }}</mat-card-title>
-            <mat-card-subtitle>{{ appointment.userId.firstName }} {{ appointment.userId.lastName }}</mat-card-subtitle>
+            <mat-card-title>{{ appointment.userId.firstName }} {{ appointment.userId.lastName }}</mat-card-title>
             <mat-card-subtitle>{{ appointment.date | date: 'medium' }}</mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
+            <ul>
+              <li *ngFor="let service of appointment.serviceIds">
+                {{ service.name }} - {{ service.price }} MGA
+              </li>
+            </ul>
+            <p>Total Prix: {{ getTotalPrice(appointment.serviceIds) }} MGA</p>
             <p>Status: {{ appointment.status }}</p>
-            <p>Prix: {{ appointment.serviceId.price }} MGA</p>
-            <!-- Add more appointment details as needed -->
+            <button *ngIf="appointment.status !== 'confirmed'" (click)="confirmAppointment(appointment._id)">
+              Confirmer
+            </button>
           </mat-card-content>
         </mat-card>
       </div>
@@ -38,7 +64,7 @@ import {AppointmentsService} from "../services/appointments.service";
   ],
 })
 export class EmployeeAppointmentsComponent implements OnInit {
-  appointments: any[] = [];
+  appointments: Appointment[] = [];
 
   constructor(private appointmentsService: AppointmentsService) {}
 
@@ -58,5 +84,14 @@ export class EmployeeAppointmentsComponent implements OnInit {
     } else {
       console.error('User ID not found in the token.');
     }
+  }
+
+  getTotalPrice(services: Service[]): number {
+    return services.reduce((sum, service) => sum + service.price, 0);
+  }
+
+  confirmAppointment(appointmentId: string) {
+    // Call service to confirm appointment
+    console.log('Confirm appointment:', appointmentId);
   }
 }
