@@ -4,18 +4,13 @@ import { ChartConfiguration, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
-  selector: 'manager-daily-revenue',
+  selector: 'manager-monthly-ca',
   template: `
     <div>
-      <h2>Bénéfices par jours</h2>
+      <h1>Chiffres d'affaires par mois</h1>
       <label for="year">Year:</label>
       <select id="year" [(ngModel)]="selectedYear" (change)="fetchData()">
         <option *ngFor="let year of years" [value]="year">{{year}}</option>
-      </select>
-
-      <label for="month">Month:</label>
-      <select id="month" [(ngModel)]="selectedMonth" (change)="fetchData()">
-        <option *ngFor="let month of months" [value]="month">{{month}}</option>
       </select>
     </div>
 
@@ -30,13 +25,13 @@ import { BaseChartDirective } from 'ng2-charts';
   `,
   styles: []
 })
-export class ManagerDailyRevenueComponent implements OnInit {
+export class ManagerMonthlyCaComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
   lineChartData: ChartConfiguration['data'] = {
     datasets: [{
       data: [],
-      label: 'Total Revenue',
+      label: 'Total Chiffre d\'affaire',
       borderColor: 'black',
       backgroundColor: 'rgba(255,0,0,0.3)',
     }],
@@ -48,9 +43,7 @@ export class ManagerDailyRevenueComponent implements OnInit {
   lineChartType: ChartType = 'line';
 
   years: number[] = [];
-  months: number[] = Array.from({length: 12}, (_, i) => i + 1);
   selectedYear: number = new Date().getFullYear();
-  selectedMonth: number = new Date().getMonth() + 1;
 
   constructor(private http: HttpClient) {}
 
@@ -65,17 +58,19 @@ export class ManagerDailyRevenueComponent implements OnInit {
   }
 
   fetchData() {
-    this.http.get<any[]>(`http://localhost:3000/sales/revenue/${this.selectedYear}/${this.selectedMonth}`).subscribe(data => {
-      const newData = data.map(item => item.totalRevenue);
-      const newLabels = data.map(item => `${item.day}`);
-      // Update the whole lineChartData object to ensure Angular detects changes
-      this.lineChartData.datasets = [{
-        data: newData,
-        label: 'Total Revenue',
-        borderColor: 'black',
-        backgroundColor: 'rgba(255,0,0,0.3)',
-      }];
-      this.lineChartData.labels = newLabels;
+    this.http.get<any[]>(`http://localhost:3000/sales/income/${this.selectedYear}`).subscribe(data => {
+      // Initialize an array for all months with default revenue of 0
+      const monthlyRevenue = new Array(12).fill(0);
+      // Update the array with the fetched data
+      data.forEach(item => {
+        if (item.month >= 1 && item.month <= 12) {
+          monthlyRevenue[item.month - 1] = item.totalIncome;
+        }
+      });
+
+      // Update the chart data
+      this.lineChartData.datasets[0].data = monthlyRevenue;
+      this.lineChartData.labels = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
       // Force chart update
       if (this.chart) {

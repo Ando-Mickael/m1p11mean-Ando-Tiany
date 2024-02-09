@@ -7,6 +7,7 @@ import { BaseChartDirective } from 'ng2-charts';
   selector: 'manager-monthly-revenue',
   template: `
     <div>
+      <h1>Bénéfices par mois</h1>
       <label for="year">Year:</label>
       <select id="year" [(ngModel)]="selectedYear" (change)="fetchData()">
         <option *ngFor="let year of years" [value]="year">{{year}}</option>
