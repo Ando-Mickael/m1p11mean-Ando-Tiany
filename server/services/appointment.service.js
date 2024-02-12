@@ -41,6 +41,22 @@ async function getMonthlyAppointments(year, month) {
   }
 }
 
+async function getAppointmentsForReminder(userId) {
+  const now = new Date();
+
+  const endOfTomorrow = new Date();
+  endOfTomorrow.setDate(endOfTomorrow.getDate() + 1);
+  endOfTomorrow.setHours(23, 59, 59, 999);
+
+  const appointments = await Appointment.find({
+    userId,
+    date: { $gte: now, $lte: endOfTomorrow },
+  });
+
+  return appointments;
+}
+
 module.exports = {
   getMonthlyAppointments,
+  getAppointmentsForReminder,
 };
