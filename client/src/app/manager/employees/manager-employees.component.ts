@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ConfigService } from '../../config.service';
 
 @Component({
   selector: 'manager-employees',
@@ -23,28 +24,22 @@ import { Component } from '@angular/core';
       </tbody>
     </table>
   `,
-  styles: [
-    `
-      table {
-        border-collapse: collapse;
-      }
-      td,
-      th {
-        padding: 5px;
-      }
-    `,
-  ],
 })
 export class ManagerEmployeesComponent {
   users: any[] = [];
   isLoading = true;
+  apiUrl: string;
+
+  constructor(private configService: ConfigService) {
+    this.apiUrl = configService.getApiUrl();
+  }
 
   ngOnInit() {
     this.getUsers();
   }
 
   getUsers() {
-    fetch('http://localhost:3000/employees')
+    fetch(`${this.apiUrl}/employees`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -54,7 +49,7 @@ export class ManagerEmployeesComponent {
   }
 
   deleteUser(id: any) {
-    fetch(`http://localhost:3000/employees/${id}`, {
+    fetch(`${this.apiUrl}/employees/${id}`, {
       method: 'DELETE',
     }).then(() => {
       this.getUsers();

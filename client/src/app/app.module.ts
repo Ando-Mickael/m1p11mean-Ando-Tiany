@@ -10,11 +10,12 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
 import { ClientModule } from './client/client.module';
+import { ConfigService } from './config.service';
 import { HomeComponent } from './core/home.component';
 import { EmployeeModule } from './employee/employee.module';
 import { ManagerModule } from './manager/manager.module';
-import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -31,7 +32,7 @@ import { AuthService } from './services/auth.service';
     ClientModule,
     AuthModule,
   ],
-  providers: [AuthService, provideAnimationsAsync()],
+  providers: [AuthService, provideAnimationsAsync(), ConfigService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

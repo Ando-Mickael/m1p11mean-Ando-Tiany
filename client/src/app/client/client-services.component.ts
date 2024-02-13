@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ConfigService } from '../config.service';
 
 @Component({
   selector: 'client-services',
@@ -55,8 +56,11 @@ export class ClientServicesComponent {
 
   cart = [];
 
-  constructor() {
+  apiUrl: string;
+
+  constructor(private configService: ConfigService) {
     this.clearCart();
+    this.apiUrl = configService.getApiUrl();
   }
 
   ngOnInit() {
@@ -69,7 +73,7 @@ export class ClientServicesComponent {
   }
 
   getServices() {
-    fetch('http://localhost:3000/services')
+    fetch(`${this.apiUrl}/services`)
       .then((response) => response.json())
       .then((data) => {
         this.services = data;
@@ -78,7 +82,7 @@ export class ClientServicesComponent {
   }
 
   getEmployees() {
-    fetch('http://localhost:3000/employees')
+    fetch(`${this.apiUrl}/employees`)
       .then((response) => response.json())
       .then((data) => {
         this.employees = data;
@@ -126,7 +130,7 @@ export class ClientServicesComponent {
       employeeId: this.employeeId,
     };
 
-    fetch('http://localhost:3000/appointments', {
+    fetch(`${this.apiUrl}/appointments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

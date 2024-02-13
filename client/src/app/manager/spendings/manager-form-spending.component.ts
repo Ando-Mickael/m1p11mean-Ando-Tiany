@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ConfigService } from '../../config.service';
 
 @Component({
   selector: 'manager-form-spending',
@@ -26,11 +27,14 @@ import { Router } from '@angular/router';
 })
 export class ManagerFormSpendingComponent {
   newSpending: any = {};
+  apiUrl: string;
 
-  constructor(private router: Router) {}
+  constructor(private configService: ConfigService, private router: Router) {
+    this.apiUrl = configService.getApiUrl();
+  }
 
   onSubmit() {
-    fetch('http://localhost:3000/spendings', {
+    fetch(`${this.apiUrl}/spendings`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

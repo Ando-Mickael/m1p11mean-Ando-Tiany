@@ -1,14 +1,17 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ConfigService } from '../config.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppointmentsService {
-  private apiUrl = 'http://localhost:3000';
+  apiUrl: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private configService: ConfigService) {
+    this.apiUrl = configService.getApiUrl();
+  }
 
   getAppointments(userId: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/appointments/${userId}`);

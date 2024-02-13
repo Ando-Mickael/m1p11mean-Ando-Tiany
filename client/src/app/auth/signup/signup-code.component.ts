@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ConfigService } from '../../config.service';
 
 @Component({
   selector: 'app-signup-code',
@@ -13,8 +14,11 @@ import { Router } from '@angular/router';
 })
 export class SignupCodeComponent {
   code: string = '';
+  apiUrl: string;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private configService: ConfigService) {
+    this.apiUrl = configService.getApiUrl();
+  }
 
   onSubmit() {
     const verificationCode = localStorage.getItem('code')?.replace(/"/g, '');
@@ -25,7 +29,7 @@ export class SignupCodeComponent {
       // insert new user in db
       const newUser = JSON.parse(localStorage.getItem('newUser') as string);
 
-      fetch('http://localhost:3000/auth/signup', {
+      fetch(`${this.apiUrl}/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,7 +52,7 @@ export class SignupCodeComponent {
     const newUser = localStorage.getItem('newUser');
     console.log(newUser);
 
-    fetch('http://localhost:3000/auth/send-code', {
+    fetch(`${this.apiUrl}/auth/send-code`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

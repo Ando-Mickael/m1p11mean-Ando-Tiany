@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { ConfigService } from '../../config.service';
 
 @Component({
   selector: 'manager-total-monthly-appointments',
@@ -56,7 +57,11 @@ export class TotalMonthlyAppointments implements OnInit {
   selectedYear: number = new Date().getFullYear();
   selectedMonth: number = new Date().getMonth() + 1;
 
-  constructor() {}
+  apiUrl: string;
+
+  constructor(private configService: ConfigService) {
+    this.apiUrl = configService.getApiUrl();
+  }
 
   ngOnInit() {
     this.populateYears();
@@ -73,7 +78,7 @@ export class TotalMonthlyAppointments implements OnInit {
 
   fetchData() {
     fetch(
-      `http://localhost:3000/managers/total-monthly-appointments?year=${this.selectedYear}&month=${this.selectedMonth}`
+      `${this.apiUrl}/managers/total-monthly-appointments?year=${this.selectedYear}&month=${this.selectedMonth}`
     )
       .then((response) => response.json())
       .then((data) => {

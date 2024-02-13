@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ConfigService } from '../../config.service';
 
 @Component({
   selector: 'manager-employee',
@@ -34,7 +35,14 @@ export class ManagerEmployeeComponent {
   user: any = {};
   isLoading = true;
 
-  constructor(private route: ActivatedRoute) {}
+  apiUrl: string;
+
+  constructor(
+    private configService: ConfigService,
+    private route: ActivatedRoute
+  ) {
+    this.apiUrl = configService.getApiUrl();
+  }
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
@@ -43,7 +51,7 @@ export class ManagerEmployeeComponent {
   }
 
   getUser(id: string) {
-    fetch(`http://localhost:3000/employees/${id}`)
+    fetch(`${this.apiUrl}/employees/${id}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -54,7 +62,7 @@ export class ManagerEmployeeComponent {
 
   update() {
     console.log(this.user);
-    fetch(`http://localhost:3000/employees/${this.user._id}`, {
+    fetch(`${this.apiUrl}/employees/${this.user._id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

@@ -1,14 +1,17 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ConfigService } from '../config.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ServiceService {
-  private apiUrl = 'http://localhost:3000';
+  private apiUrl: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private configService: ConfigService) {
+    this.apiUrl = configService.getApiUrl();
+  }
 
   createService(newService: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/services`, newService);
@@ -19,7 +22,10 @@ export class ServiceService {
   }
 
   updateService(serviceId: string, serviceData: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/services/${serviceId}`, serviceData);
+    return this.http.put<any>(
+      `${this.apiUrl}/services/${serviceId}`,
+      serviceData
+    );
   }
 
   deleteService(serviceId: string): Observable<any> {

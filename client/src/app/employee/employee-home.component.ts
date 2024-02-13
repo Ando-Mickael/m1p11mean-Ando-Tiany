@@ -7,7 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Observable, forkJoin } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../auth/auth.service';
+import { ConfigService } from '../config.service';
 import { EmployeeService } from '../services/employee.service';
 import { FileUploadService } from '../services/file-upload.service';
 import { MatFileUploadQueueService } from '../services/mat-file-upload-queue.service';
@@ -34,21 +35,35 @@ import { MatFileUploadQueueService } from '../services/mat-file-upload-queue.ser
           >
             <div cdkDrag>
               <img
-                [src]="
-                  'http://localhost:3000/uploads/' + employee.userInfo.picture
-                "
+                [src]="apiUrl + '/uploads/' + employee.userInfo.picture"
                 alt="Image"
                 width="100"
                 height="100"
               />
             </div>
           </div>
-          <div class="file-drop-zone" (drop)="onFileDrop($event)" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (click)="triggerFileInput()">
+          <div
+            class="file-drop-zone"
+            (drop)="onFileDrop($event)"
+            (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)"
+            (click)="triggerFileInput()"
+          >
             Drag and drop your file here or click to select
-            <input type="file" id="file-upload" (change)="onImageSelected($event)" accept="image/*" hidden />
+            <input
+              type="file"
+              id="file-upload"
+              (change)="onImageSelected($event)"
+              accept="image/*"
+              hidden
+            />
           </div>
-          <img *ngIf="previewUrl" [src]="previewUrl" alt="Image preview" style="max-width: 100%; max-height: 300px; margin-top: 20px;">
-
+          <img
+            *ngIf="previewUrl"
+            [src]="previewUrl"
+            alt="Image preview"
+            style="max-width: 100%; max-height: 300px; margin-top: 20px;"
+          />
         </div>
 
         <div class="form-group">
@@ -89,43 +104,45 @@ import { MatFileUploadQueueService } from '../services/mat-file-upload-queue.ser
       </form>
     </div>
 
-    <employee-appointments/>
+    <employee-appointments />
 
     <div *ngIf="!employee">
       <p>Chargement des données de l'employé...</p>
     </div>
   `,
-  styles: [`
-    .file-drop-zone {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      border: 2px dashed #cccccc; /* Light gray border */
-      border-radius: 10px; /* Rounded corners for a smoother look */
-      background-color: #f9f9f9; /* Light background color */
-      color: #888888; /* Slightly dark text color for contrast */
-      font-family: Arial, sans-serif; /* A standard, readable font */
-      text-align: center;
-      cursor: pointer;
-      transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
-    }
+  styles: [
+    `
+      .file-drop-zone {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        border: 2px dashed #cccccc; /* Light gray border */
+        border-radius: 10px; /* Rounded corners for a smoother look */
+        background-color: #f9f9f9; /* Light background color */
+        color: #888888; /* Slightly dark text color for contrast */
+        font-family: Arial, sans-serif; /* A standard, readable font */
+        text-align: center;
+        cursor: pointer;
+        transition: border-color 0.3s ease-in-out,
+          background-color 0.3s ease-in-out;
+      }
 
-    /* Style for when a file is being dragged over the drop zone */
-    .file-drop-zone.dragover {
-      border-color: #009688; /* Teal border color for visual feedback */
-      background-color: #e0f2f1; /* Very light teal background */
-      color: #005b5b; /* Darker text color for better readability */
-    }
+      /* Style for when a file is being dragged over the drop zone */
+      .file-drop-zone.dragover {
+        border-color: #009688; /* Teal border color for visual feedback */
+        background-color: #e0f2f1; /* Very light teal background */
+        color: #005b5b; /* Darker text color for better readability */
+      }
 
-    /* Optional: Style for hover state, can be the same as dragover for consistency */
-    .file-drop-zone:hover {
-      border-color: #009688; /* Teal border color to indicate actionable area */
-      background-color: #e0f2f1; /* Light teal background for visual feedback */
-      color: #005b5b; /* Darker text color to maintain readability */
-    }
-
-  `]
+      /* Optional: Style for hover state, can be the same as dragover for consistency */
+      .file-drop-zone:hover {
+        border-color: #009688; /* Teal border color to indicate actionable area */
+        background-color: #e0f2f1; /* Light teal background for visual feedback */
+        color: #005b5b; /* Darker text color to maintain readability */
+      }
+    `,
+  ],
 })
 export class EmployeeHomeComponent implements OnInit {
   previewUrl: string | ArrayBuffer | null = null;
@@ -142,13 +159,17 @@ export class EmployeeHomeComponent implements OnInit {
     'Sunday',
   ];
 
+  apiUrl: string;
+
   constructor(
     private authService: AuthService,
     private employeeService: EmployeeService,
     private formBuilder: FormBuilder,
     private fileUploadQueueService: MatFileUploadQueueService,
-    private fileUploadService: FileUploadService
+    private fileUploadService: FileUploadService,
+    private configService: ConfigService
   ) {
+    this.apiUrl = configService.getApiUrl();
     this.updateForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ConfigService } from '../config.service';
 
 type Notification = {
   type: string;
@@ -25,6 +26,12 @@ export class ClientNotificationsComponent {
   notifications: Notification[] = [];
   isLoading = true;
 
+  apiUrl: string;
+
+  constructor(private configService: ConfigService) {
+    this.apiUrl = configService.getApiUrl();
+  }
+
   ngOnInit() {
     this.getNotifications();
   }
@@ -33,7 +40,7 @@ export class ClientNotificationsComponent {
     try {
       const userId = localStorage.getItem('userId');
 
-      fetch(`http://localhost:3000/users/notifications/${userId}`)
+      fetch(`${this.apiUrl}/users/notifications/${userId}`)
         .then((res) => res.json())
         .then((data) => {
           this.notifications = data;

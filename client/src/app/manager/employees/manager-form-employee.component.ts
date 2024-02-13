@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ConfigService } from '../../config.service';
 
 @Component({
   selector: 'manager-form-employee',
@@ -39,10 +40,14 @@ import { Router } from '@angular/router';
 export class ManagerFormEmployeeComponent {
   newUser: any = {};
 
-  constructor(private router: Router) {}
+  apiUrl: string;
+
+  constructor(private configService: ConfigService, private router: Router) {
+    this.apiUrl = configService.getApiUrl();
+  }
 
   onSubmit() {
-    fetch('http://localhost:3000/employees', {
+    fetch(`${this.apiUrl}/employees`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

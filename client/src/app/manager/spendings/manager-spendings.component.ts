@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ConfigService } from '../../config.service';
 
 @Component({
   selector: 'manager-spendings',
@@ -19,28 +20,23 @@ import { Component } from '@angular/core';
       </tbody>
     </table>
   `,
-  styles: [
-    `
-      table {
-        border-collapse: collapse;
-      }
-      td,
-      th {
-        padding: 5px;
-      }
-    `,
-  ],
 })
 export class ManagerSpendingsComponent {
   spendings: any[] = [];
   isLoading = true;
+
+  apiUrl: string;
+
+  constructor(private configService: ConfigService) {
+    this.apiUrl = configService.getApiUrl();
+  }
 
   ngOnInit() {
     this.getSpendings();
   }
 
   getSpendings() {
-    fetch('http://localhost:3000/spendings')
+    fetch(`${this.apiUrl}/spendings`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

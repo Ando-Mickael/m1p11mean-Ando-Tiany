@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfigService } from '../config.service';
 
 @Component({
   selector: 'client-home',
@@ -45,7 +46,15 @@ export class ClientPaymentComponent {
   cardNumber = '';
   appointmentId = '';
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  apiUrl: string;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private configService: ConfigService
+  ) {
+    this.apiUrl = configService.getApiUrl();
+  }
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
@@ -64,16 +73,13 @@ export class ClientPaymentComponent {
     ) {
       alert('Invalid card number');
     } else {
-      fetch(
-        'http://localhost:3000/appointments/confirm/' + this.appointmentId,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: '',
-        }
-      ).then(() => {
+      fetch(`${this.apiUrl}/appointments/confirm/${this.appointmentId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: '',
+      }).then(() => {
         this.router.navigate(['/client/history']);
       });
     }

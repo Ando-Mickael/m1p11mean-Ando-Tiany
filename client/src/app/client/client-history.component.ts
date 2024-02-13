@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ConfigService } from '../config.service';
 
 @Component({
   selector: 'client-history',
@@ -40,15 +41,18 @@ export class ClientHistoryComponent {
   appointments: any[] = [];
   isLoading = true;
 
+  apiUrl: string;
+
+  constructor(private configService: ConfigService) {
+    this.apiUrl = configService.getApiUrl();
+  }
+
   ngOnInit() {
     this.getAppointments();
   }
 
   getAppointments() {
-    fetch(
-      'http://localhost:3000/appointments/users/' +
-        localStorage.getItem('userId')
-    )
+    fetch(`${this.apiUrl}/appointments/users/` + localStorage.getItem('userId'))
       .then((response) => response.json())
       .then((data) => {
         this.appointments = data;
