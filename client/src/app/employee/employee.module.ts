@@ -1,15 +1,33 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  MatCard,
+  MatCardContent,
+  MatCardHeader,
+  MatCardSubtitle,
+  MatCardTitle,
+} from '@angular/material/card';
+import { AppointmentsService } from '../services/appointments.service';
+import { EmployeeAppointmentsComponent } from './employee-appointments.component';
 import { EmployeeHomeComponent } from './employee-home.component';
-import {EmployeeAppointmentsComponent} from "./employee-appointments.component";
-import {AppointmentsService} from "../services/appointments.service";
-import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
+import { EmployeeRoutingModule } from './employee-routing.module';
 
 @NgModule({
   declarations: [EmployeeHomeComponent, EmployeeAppointmentsComponent],
-  imports: [CommonModule, ReactiveFormsModule, DragDropModule, MatCard, MatCardHeader, MatCardContent, MatCardSubtitle, MatCardTitle, FormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    DragDropModule,
+    MatCard,
+    MatCardHeader,
+    MatCardContent,
+    MatCardSubtitle,
+    MatCardTitle,
+    FormsModule,
+    EmployeeRoutingModule,
+  ],
   providers: [AppointmentsService],
 })
 export class EmployeeModule {}

@@ -5,8 +5,10 @@ import { RelativeTimePipe } from '../pipes/relative-time.pipe';
 import { UserService } from '../services/user.service';
 import { ClientHistoryComponent } from './client-history.component';
 import { ClientHomeComponent } from './client-home.component';
+import { ClientNavbarComponent } from './client-navbar.component';
 import { ClientNotificationsComponent } from './client-notifications.component';
 import { ClientPaymentComponent } from './client-payment.component';
+import { ClientRoutingModule } from './client-routing.module';
 import { ClientServicesComponent } from './client-services.component';
 import { PreferencesComponent } from './preferences.component';
 
@@ -19,8 +21,9 @@ import { PreferencesComponent } from './preferences.component';
     ClientPaymentComponent,
     ClientNotificationsComponent,
     RelativeTimePipe,
+    ClientNavbarComponent,
   ],
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ClientRoutingModule],
   providers: [UserService],
 })
 export class ClientModule {}

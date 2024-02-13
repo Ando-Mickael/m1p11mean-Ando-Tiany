@@ -13,6 +13,7 @@ import { ManagerEmployeesComponent } from './employees/manager-employees.compone
 import { ManagerFormEmployeeComponent } from './employees/manager-form-employee.component';
 import { ManagerHomeComponent } from './manager-home.component';
 import { ManagerNavbarComponent } from './manager-navbar.component';
+import { ManagerRoutingModule } from './manager-routing.module';
 import { ManagerServiceComponent } from './services/manager-service.component';
 import { ManagerSpecialOfferComponent } from './special-offers/manager-special-offer.component';
 import { ManagerFormSpendingComponent } from './spendings/manager-form-spending.component';
@@ -36,6 +37,12 @@ import { ManagerSpendingsComponent } from './spendings/manager-spendings.compone
     ManagerDailyCaComponent,
     ManagerNavbarComponent,
   ],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, NgChartsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgChartsModule,
+    ManagerRoutingModule,
+  ],
 })
 export class ManagerModule {}

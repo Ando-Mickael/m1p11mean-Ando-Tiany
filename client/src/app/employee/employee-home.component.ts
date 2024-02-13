@@ -109,6 +109,8 @@ import { MatFileUploadQueueService } from '../services/mat-file-upload-queue.ser
     <div *ngIf="!employee">
       <p>Chargement des données de l'employé...</p>
     </div>
+
+    <router-outlet></router-outlet>
   `,
   styles: [
     `
