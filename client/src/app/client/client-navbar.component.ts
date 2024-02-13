@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
       <ul>
         <li><a href="/client/services">Services</a></li>
         <li><a href="/client/history">History</a></li>
+        <li><a href="/logout">Logout</a></li>
       </ul>
       <hr />
     </div>
