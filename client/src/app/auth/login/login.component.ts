@@ -6,45 +6,34 @@ import { AuthService } from '../auth.service';
 @Component({
   selector: 'app-login',
   template: `
-    <div class="login-container">
-      <h2>Login</h2>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input type="email" id="email" formControlName="email" required />
-          <div
-            *ngIf="
-              loginForm.get('email')?.hasError('email') &&
-              loginForm.get('email')?.touched
-            "
-          >
-            Adresse Email Invalide
-          </div>
+    <div class="container">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-md-6 login-container">
+          <h2 class="mb-4">Login</h2>
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" id="email" formControlName="email" class="form-control" required />
+              <div *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched" class="invalid-feedback">
+                Adresse Email Invalide
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="password">Mot De Passe:</label>
+              <input type="password" id="password" formControlName="password" class="form-control" required />
+              <div *ngIf="loginForm.get('password')?.hasError('minlength') && loginForm.get('password')?.touched" class="invalid-feedback">
+                Mot de passe Obligatoire
+              </div>
+            </div>
+            <div *ngIf="errorMessage" class="mt-3 alert alert-danger">
+              {{ errorMessage }}
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">
+              Se Connecter
+            </button>
+          </form>
         </div>
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            formControlName="password"
-            required
-          />
-          <div
-            *ngIf="
-              loginForm.get('password')?.hasError('minlength') &&
-              loginForm.get('password')?.touched
-            "
-          >
-            Mot de passe Obligatoire
-          </div>
-        </div>
-        <button type="submit" [disabled]="loginForm.invalid">
-          Se Connecter
-        </button>
-        <div *ngIf="errorMessage" class="error-message">
-          {{ errorMessage }}
-        </div>
-      </form>
+      </div>
     </div>
   `,
   styles: [
@@ -52,6 +41,14 @@ import { AuthService } from '../auth.service';
       .error-message {
         color: red;
         margin-top: 10px;
+      }
+
+      .login-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Set to 100% of viewport height */
       }
     `,
   ],
