@@ -5,23 +5,30 @@ import { SpecialOfferService } from '../../services/special-offer.service';
 @Component({
   selector: 'manager-special-offer',
   template: `
-    <div>
-      <h2>Create New Special Offer</h2>
+    <section class="ftco-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-xl-10 ftco-animate">
+            <div>
+              <h2>Créer une Offre Spéciale</h2>
 
-      <form [formGroup]="specialOfferForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label for="name">Name:</label>
-          <input type="text" id="name" formControlName="name" />
+              <form [formGroup]="specialOfferForm" (ngSubmit)="onSubmit()" class="billing-form">
+                    <div class="form-group">
+                      <label for="name">Nom:</label>
+                      <input type="text" id="name" formControlName="name" class="form-control" placeholder="">
+                    </div>
+                    <div class="form-group">
+                      <label for="description">Description:</label>
+                      <textarea id="description" formControlName="description" class="form-control" placeholder=""></textarea>
+                    </div>
+                  <div class="w-100"></div>
+                    <button type="submit" class="btn btn-primary py-3 px-4">Create Special Offer</button>
+              </form>
+            </div>
+          </div>
         </div>
-
-        <div class="form-group">
-          <label for="description">Description:</label>
-          <textarea id="description" formControlName="description"></textarea>
-        </div>
-
-        <button type="submit">Create Special Offer</button>
-      </form>
-    </div>
+      </div>
+    </section>
   `,
 })
 export class ManagerSpecialOfferComponent {
