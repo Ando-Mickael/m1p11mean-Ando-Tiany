@@ -11,6 +11,7 @@ import { ClientPaymentComponent } from './client-payment.component';
 import { ClientRoutingModule } from './client-routing.module';
 import { ClientServicesComponent } from './client-services.component';
 import { PreferencesComponent } from './preferences.component';
+import {HeroComponent} from "../core/hero.component";
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { PreferencesComponent } from './preferences.component';
     ClientNotificationsComponent,
     RelativeTimePipe,
     ClientNavbarComponent,
+    HeroComponent
   ],
   imports: [CommonModule, FormsModule, ClientRoutingModule],
   providers: [UserService],

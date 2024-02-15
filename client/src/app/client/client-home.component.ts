@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <div>
       <client-navbar></client-navbar>
-
+      <hero [pageTitle]="'Client'"></hero>
       <client-notifications></client-notifications>
 
       <client-preferences></client-preferences>
