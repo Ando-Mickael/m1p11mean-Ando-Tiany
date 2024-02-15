@@ -13,9 +13,10 @@ import { AppointmentsService } from '../services/appointments.service';
 import { EmployeeAppointmentsComponent } from './employee-appointments.component';
 import { EmployeeHomeComponent } from './employee-home.component';
 import { EmployeeRoutingModule } from './employee-routing.module';
+import {EmployeeNavbarComponent} from "./employee-navbar.component";
 
 @NgModule({
-  declarations: [EmployeeHomeComponent, EmployeeAppointmentsComponent],
+  declarations: [EmployeeHomeComponent, EmployeeAppointmentsComponent, EmployeeNavbarComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
