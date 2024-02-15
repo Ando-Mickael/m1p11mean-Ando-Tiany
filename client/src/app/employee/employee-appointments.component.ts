@@ -26,39 +26,51 @@ interface Appointment {
 @Component({
   selector: 'employee-appointments',
   template: `
-    <div>
-      <h3>Mes Rendez-vous</h3>
-      <div class="filter-container">
-        <input type="date" [(ngModel)]="filterDate" (change)="applyFilters()" placeholder="Date">
-        <select [(ngModel)]="filterStatus" (change)="applyFilters()">
-          <option value="">Tous les États</option>
-          <option value="pending">En attente</option>
-          <option value="confirmed">Confirmé</option>
-        </select>
-      </div>
-      <div class="appointments-container">
-        <mat-card *ngFor="let appointment of filteredAppointments" class="appointment-card">
-          <mat-card-header>
-            <mat-card-title>{{ appointment.userId.firstName }} {{ appointment.userId.lastName }}</mat-card-title>
-            <mat-card-subtitle>{{ appointment.date | date: 'medium' }}</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <ul>
-              <li *ngFor="let service of appointment.serviceIds">
-                {{ service.name }} - {{ service.price }} MGA
-              </li>
-            </ul>
-            <p>Total Prix: {{ getTotalPrice(appointment.serviceIds) }} MGA</p>
-            <p>Total Commission: {{ getTotalCommission(appointment.serviceIds) }} MGA</p>
-            <p>Status: {{ appointment.status }}</p>
-            <button *ngIf="appointment.status !== 'confirmed'" (click)="confirmAppointment(appointment._id)">
-              Confirmer
-            </button>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <h2>Total des Commissions: {{ getTotalCommissions() }} MGA</h2>
-    </div>
+      <section class="ftco-section">
+          <div class="container">
+              <div class="row justify-content-center">
+                  <div class="col-xl-10 ftco-animate">
+                      <h2>Mes Rendez-vous</h2>
+                      <div class="filter-container">
+                          <div class="form-group">
+                              <input type="date" [(ngModel)]="filterDate" (change)="applyFilters()" class="form-control"
+                                     placeholder="Date">
+                          </div>
+                          <div class="form-group">
+                              <select [(ngModel)]="filterStatus" (change)="applyFilters()" class="form-control">
+                                  <option value="">Tous les États</option>
+                                  <option value="pending">En attente</option>
+                                  <option value="confirmed">Confirmé</option>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="appointments-container">
+                          <mat-card *ngFor="let appointment of filteredAppointments" class="appointment-card">
+                              <mat-card-header>
+                                  <mat-card-title>{{ appointment.userId.firstName }} {{ appointment.userId.lastName }}</mat-card-title>
+                                  <mat-card-subtitle>{{ appointment.date | date: 'medium' }}</mat-card-subtitle>
+                              </mat-card-header>
+                              <mat-card-content>
+                                  <ul>
+                                      <li *ngFor="let service of appointment.serviceIds">
+                                          {{ service.name }} - {{ service.price }} MGA
+                                      </li>
+                                  </ul>
+                                  <p>Total Prix: {{ getTotalPrice(appointment.serviceIds) }} MGA</p>
+                                  <p>Total Commission: {{ getTotalCommission(appointment.serviceIds) }} MGA</p>
+                                  <p>Status: {{ appointment.status }}</p>
+                                  <button *ngIf="appointment.status !== 'confirmed'"
+                                          (click)="confirmAppointment(appointment._id)">
+                                      Confirmer
+                                  </button>
+                              </mat-card-content>
+                          </mat-card>
+                      </div>
+                      <h2 class="mt-3">Total des Commissions: {{ getTotalCommissions() }} MGA</h2>
+                  </div>
+              </div>
+          </div>
+      </section>
   `,
   styles: [
     `

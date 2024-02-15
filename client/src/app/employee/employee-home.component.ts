@@ -16,104 +16,111 @@ import { MatFileUploadQueueService } from '../services/mat-file-upload-queue.ser
 @Component({
   selector: 'employee-home',
   template: `
-      <section class="ftco-section">
-          <div class="container">
-              <div class="row justify-content-center">
-                  <div class="col-xl-10 ftco-animate">
-                      <div *ngIf="employee">
-                          <h2>Mon Profil</h2>
+      <div class="row">
+          <div class="col-md-4">
+              <section class="ftco-section">
+                  <div class="container">
+                      <div class="row justify-content-center">
+                          <div class="col-xl-10 ftco-animate">
+                              <div *ngIf="employee">
+                                  <h2>Mon Profil</h2>
 
-                          <form [formGroup]="updateForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
-                              <div class="form-group">
-                                  <label for="image">Image:</label>
-                                  <div
-                                          cdkDropList
-                                          #imageList="cdkDropList"
-                                          [cdkDropListData]="employee.images"
-                                          [cdkDropListConnectedTo]="['imageList']"
-                                          (cdkDropListDropped)="onImageDropped($event)"
-                                  >
-                                      <div cdkDrag>
+                                  <form [formGroup]="updateForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+                                      <div class="form-group">
+                                          <label for="image">Image:</label>
+                                          <div
+                                                  cdkDropList
+                                                  #imageList="cdkDropList"
+                                                  [cdkDropListData]="employee.images"
+                                                  [cdkDropListConnectedTo]="['imageList']"
+                                                  (cdkDropListDropped)="onImageDropped($event)"
+                                          >
+                                              <div cdkDrag>
+                                                  <img
+                                                          [src]="apiUrl + '/uploads/' + employee.userInfo.picture"
+                                                          alt="Image"
+                                                          width="100"
+                                                          height="100"
+                                                  />
+                                              </div>
+                                          </div>
+                                          <div
+                                                  class="file-drop-zone mt-3"
+                                                  (drop)="onFileDrop($event)"
+                                                  (dragover)="onDragOver($event)"
+                                                  (dragleave)="onDragLeave($event)"
+                                                  (click)="triggerFileInput()"
+                                          >
+                                              Drag and drop your file here or click to select
+                                              <input
+                                                      type="file"
+                                                      id="file-upload"
+                                                      (change)="onImageSelected($event)"
+                                                      accept="image/*"
+                                                      hidden
+                                              />
+                                          </div>
                                           <img
-                                                  [src]="apiUrl + '/uploads/' + employee.userInfo.picture"
-                                                  alt="Image"
-                                                  width="100"
-                                                  height="100"
+                                                  *ngIf="previewUrl"
+                                                  [src]="previewUrl"
+                                                  alt="Image preview"
+                                                  style="max-width: 100%; max-height: 300px; margin-top: 20px;"
                                           />
                                       </div>
-                                  </div>
-                                  <div
-                                          class="file-drop-zone mt-3"
-                                          (drop)="onFileDrop($event)"
-                                          (dragover)="onDragOver($event)"
-                                          (dragleave)="onDragLeave($event)"
-                                          (click)="triggerFileInput()"
-                                  >
-                                      Drag and drop your file here or click to select
-                                      <input
-                                              type="file"
-                                              id="file-upload"
-                                              (change)="onImageSelected($event)"
-                                              accept="image/*"
-                                              hidden
-                                      />
-                                  </div>
-                                  <img
-                                          *ngIf="previewUrl"
-                                          [src]="previewUrl"
-                                          alt="Image preview"
-                                          style="max-width: 100%; max-height: 300px; margin-top: 20px;"
-                                  />
+
+                                      <div class="form-group">
+                                          <label for="firstName">Prénom:</label>
+                                          <input type="text" id="firstName" formControlName="firstName"
+                                                 class="form-control"/>
+                                      </div>
+
+                                      <div class="form-group">
+                                          <label for="lastName">Nom:</label>
+                                          <input type="text" id="lastName" formControlName="lastName"
+                                                 class="form-control"/>
+                                      </div>
+
+                                      <div class="form-group">
+                                          <label for="email">Email:</label>
+                                          <input type="email" id="email" formControlName="email" class="form-control"/>
+                                      </div>
+
+                                      <div class="form-group">
+                                          <label for="workSchedule">Horaire de travail:</label>
+                                          <div *ngFor="let day of daysOfWeek" class="form-group">
+                                              <label>{{ day }}:</label>
+                                              <div class="row">
+                                                  <div class="col-md-6">
+                                                      <input
+                                                              type="text"
+                                                              [formControl]="getStartTimeControl(day)!"
+                                                              placeholder="Heure de début"
+                                                              class="form-control"
+                                                      />
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <input
+                                                              type="text"
+                                                              [formControl]="getEndTimeControl(day)!"
+                                                              placeholder="Heure de fin"
+                                                              class="form-control"
+                                                      />
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <button type="submit" class="btn btn-primary">Mettre à jour le profil</button>
+                                  </form>
                               </div>
-
-                            <div class="form-group">
-                              <label for="firstName">Prénom:</label>
-                              <input type="text" id="firstName" formControlName="firstName" class="form-control" />
-                            </div>
-
-                            <div class="form-group">
-                              <label for="lastName">Nom:</label>
-                              <input type="text" id="lastName" formControlName="lastName" class="form-control" />
-                            </div>
-
-                            <div class="form-group">
-                              <label for="email">Email:</label>
-                              <input type="email" id="email" formControlName="email" class="form-control" />
-                            </div>
-
-                            <div class="form-group">
-                              <label for="workSchedule">Horaire de travail:</label>
-                              <div *ngFor="let day of daysOfWeek" class="form-group">
-                                <label>{{ day }}:</label>
-                                <div class="row">
-                                  <div class="col-md-6">
-                                    <input
-                                      type="text"
-                                      [formControl]="getStartTimeControl(day)!"
-                                      placeholder="Heure de début"
-                                      class="form-control"
-                                    />
-                                  </div>
-                                  <div class="col-md-6">
-                                    <input
-                                      type="text"
-                                      [formControl]="getEndTimeControl(day)!"
-                                      placeholder="Heure de fin"
-                                      class="form-control"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Mettre à jour le profil</button>
-                          </form>
+                          </div>
                       </div>
                   </div>
-              </div>
+              </section>
           </div>
-      </section>
-
-      <employee-appointments/>
+          <div class="col-md-8">
+              <employee-appointments/>
+          </div>
+      </div>
 
       <div *ngIf="!employee">
           <p>Chargement des données de l'employé...</p>
