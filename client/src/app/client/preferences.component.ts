@@ -7,28 +7,36 @@ import { EmployeeService } from '../services/employee.service';
 @Component({
   selector: 'client-preferences',
   template: `
-    <div>
-      <h2>Modifier mes Preferences</h2>
-      <form (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label for="servicePreferred">Service Préféré:</label>
-          <select id="servicePreferred" [(ngModel)]="selectedService" name="servicePreferred">
-            <option *ngFor="let service of services" [value]="service._id">{{ service.name }}</option>
-          </select>
-        </div>
+    <section class="ftco-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-xl-10 ftco-animate">
+            <div>
+              <h2>Modifier mes Préférences</h2>
+              <form (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                  <label for="servicePreferred">Service Préféré:</label>
+                  <select id="servicePreferred" [(ngModel)]="selectedService" name="servicePreferred" class="form-control">
+                    <option *ngFor="let service of services" [value]="service._id">{{ service.name }}</option>
+                  </select>
+                </div>
 
-        <div class="form-group">
-          <label for="employeePreferred">Employeé Préféré:</label>
-          <select id="employeePreferred" [(ngModel)]="selectedEmployee" name="employeePreferred">
-            <option *ngFor="let employee of employees" [value]="employee._id">{{ employee.firstName }} {{ employee.lastName }}</option>
-          </select>
-        </div>
+                <div class="form-group">
+                  <label for="employeePreferred">Employé Préféré:</label>
+                  <select id="employeePreferred" [(ngModel)]="selectedEmployee" name="employeePreferred" class="form-control">
+                    <option *ngFor="let employee of employees" [value]="employee._id">{{ employee.firstName }} {{ employee.lastName }}</option>
+                  </select>
+                </div>
 
-        <div class="form-group">
-          <button type="submit">Valider</button>
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary">Valider</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </section>
   `,
   styles: [
     `

@@ -9530,9 +9530,9 @@ h1, h2, h3, h4, h5,
 textarea.form-control {
   height: inherit !important; }
 
-.ftco-animate {
+/*.ftco-animate {
   opacity: 0;
-  visibility: hidden; }
+  visibility: hidden; }*/
 
 .bg-primary {
   background: #dbcc8f !important; }
