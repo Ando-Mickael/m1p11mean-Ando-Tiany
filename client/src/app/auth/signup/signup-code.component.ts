@@ -5,11 +5,34 @@ import { ConfigService } from '../../config.service';
 @Component({
   selector: 'app-signup-code',
   template: `
-    <form (ngSubmit)="onSubmit()">
-      <input type="text" name="code" placeholder="Code" [(ngModel)]="code" />
-      <button type="button" (click)="resendCode()">Resend code</button>
-      <button type="submit">Verify</button>
-    </form>
+    <div class="container">
+      <div class="row d-flex justify-content-center">
+        <div class="col-6">
+          <form (ngSubmit)="onSubmit()">
+            <h1 class="text-center my-4">Verify your account</h1>
+            <div class="form-group">
+              <label for="code">Code</label>
+              <input
+                type="text"
+                name="code"
+                placeholder="Code"
+                [(ngModel)]="code"
+                class="form-control"
+              />
+            </div>
+
+            <button type="button" class="btn btn-link" (click)="resendCode()">
+              Resend code ?
+            </button>
+            <div>
+              <button type="submit" class="btn btn-primary w-100 px-4 py-3">
+                Verify
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   `,
 })
 export class SignupCodeComponent {

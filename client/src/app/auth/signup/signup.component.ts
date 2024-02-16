@@ -5,34 +5,61 @@ import { ConfigService } from '../../config.service';
 @Component({
   selector: 'app-signup',
   template: `
-    <form (ngSubmit)="onSubmit()">
-      <input
-        type="text"
-        name="firstName"
-        placeholder="First Name"
-        [(ngModel)]="signupData.firstName"
-      />
-      <input
-        type="text"
-        name="lastName"
-        placeholder="Last Name"
-        [(ngModel)]="signupData.lastName"
-      />
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        [(ngModel)]="signupData.email"
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        [(ngModel)]="signupData.password"
-      />
+    <div class="container">
+      <div class="row d-flex justify-content-center">
+        <div class="col-6">
+          <form (ngSubmit)="onSubmit()">
+            <h1 class="text-center my-4">Sign Up</h1>
+            <div class="form-group">
+              <label for="firstName">First name</label>
+              <input
+                type="text"
+                name="firstName"
+                placeholder="First Name"
+                [(ngModel)]="signupData.firstName"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last name</label>
+              <input
+                type="text"
+                name="lastName"
+                placeholder="Last Name"
+                [(ngModel)]="signupData.lastName"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                [(ngModel)]="signupData.email"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                [(ngModel)]="signupData.password"
+                class="form-control"
+              />
+            </div>
 
-      <button type="submit">Signup</button>
-    </form>
+            <div>
+              <button type="submit" class="btn btn-primary w-100 px-4 py-3">
+                Signup
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   `,
 })
 export class SignupComponent {
