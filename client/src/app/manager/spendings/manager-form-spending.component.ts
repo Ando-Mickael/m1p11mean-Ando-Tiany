@@ -5,23 +5,44 @@ import { ConfigService } from '../../config.service';
 @Component({
   selector: 'manager-form-spending',
   template: `
+    <h2>Ajouter une dépense</h2>
     <form (ngSubmit)="onSubmit()">
-      <h2>Add employee</h2>
-      <input
-        type="text"
-        name="name"
-        placeholder="Name"
-        [(ngModel)]="newSpending.name"
-      />
-      <input
-        type="text"
-        name="amount"
-        placeholder="Amount"
-        [(ngModel)]="newSpending.amount"
-      />
-      <input type="date" name="date" [(ngModel)]="newSpending.date" />
+      <div class="form-group">
+        <label for="name">Intitulé</label>
+        <input
+          type="text"
+          name="name"
+          placeholder="Intitulé"
+          [(ngModel)]="newSpending.name"
+          class="form-control"
+        />
+      </div>
 
-      <button type="submit">Add</button>
+      <div class="form-group">
+        <label for="amount">Prix</label>
+        <input
+          type="text"
+          name="amount"
+          placeholder="Prix"
+          [(ngModel)]="newSpending.amount"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="date">Date</label>
+        <input
+          type="date"
+          name="date"
+          [(ngModel)]="newSpending.date"
+          class="form-control"
+        />
+      </div>
+      <div>
+        <button class="btn btn-primary w-100 px-4 py-3" type="submit">
+          Add
+        </button>
+      </div>
     </form>
   `,
 })
