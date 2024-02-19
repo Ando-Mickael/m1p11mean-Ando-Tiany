@@ -196,8 +196,9 @@ async function calculateDailyRevenue(req, res, next) {
 
     const totalIncome = income ? income.totalIncome : 0;
     const totalExpense = expense ? expense.totalAmount : 0;
+    const totalCommission = expense ? expense.totalCommission : 0;
 
-    const netRevenue = totalIncome - totalExpense;
+    const netRevenue = totalIncome - totalExpense - totalCommission;
 
     revenue.push({ day, totalRevenue: netRevenue });
   }
