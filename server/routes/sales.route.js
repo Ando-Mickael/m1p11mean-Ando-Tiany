@@ -12,4 +12,8 @@ router.get("/income/:year/:month", appointmentController.getDailyIncome, sendRes
 router.get("/revenue/:year", spendingController.getMonthlySpendings, appointmentController.getMonthlyIncome, appointmentController.calculateMonthlyRevenue, sendResponse("revenue"));
 router.get("/revenue/:year/:month", spendingController.getDailySpendings, appointmentController.getDailyIncome, appointmentController.calculateDailyRevenue, sendResponse("revenue"));
 
+router.get("/commissions/:year", spendingController.getMonthlyCommissions, sendResponse("commissions"));
+router.get("/commissions/:year/:month", spendingController.getDailyCommissions, sendResponse("commissions"));
+
+
 module.exports = router;
