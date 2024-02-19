@@ -309,7 +309,7 @@ async function getDailyCommissions(req, res, next) {
       },
       {
         $group: {
-          _id: null,
+          _id: { $dayOfMonth: '$date' }, // Group by day of month
           totalCommission: {
             $sum: {
               $multiply: [
@@ -323,6 +323,7 @@ async function getDailyCommissions(req, res, next) {
       {
         $project: {
           _id: 0,
+          day: '$_id',
           totalCommission: 1,
         },
       },
