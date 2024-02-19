@@ -45,62 +45,10 @@ async function getMonthlySpendings(req, res, next) {
         },
       },
       {
-        $lookup: {
-          from: 'appointments',
-          let: { month: '$_id' },
-          pipeline: [
-            {
-              $match: {
-                $expr: { $eq: [{ $month: '$date' }, '$$month'] },
-                status: 'confirmed',
-              },
-            },
-            {
-              $unwind: '$serviceIds',
-            },
-            {
-              $lookup: {
-                from: 'services',
-                localField: 'serviceIds',
-                foreignField: '_id',
-                as: 'service',
-              },
-            },
-            {
-              $unwind: '$service',
-            },
-            {
-              $addFields: {
-                totalCommission: {
-                  $multiply: [
-                    '$service.price',
-                    { $divide: ['$service.commissionRate', 100] },
-                  ],
-                },
-              },
-            },
-            {
-              $group: {
-                _id: null,
-                totalCommission: { $sum: '$totalCommission' },
-              },
-            },
-            {
-              $project: {
-                _id: 0,
-                totalCommission: 1,
-              },
-            },
-          ],
-          as: 'commissions',
-        },
-      },
-      {
         $project: {
           _id: 0,
           month: '$_id',
           totalAmount: 1,
-          totalCommission: { $arrayElemAt: ['$commissions.totalCommission', 0] },
         },
       },
     ]);
@@ -336,11 +284,58 @@ async function getDailyCommissions(req, res, next) {
   }
 }
 
+async function combineExpensesAndCommissions(req, res, next) {
+  try {
+    // Extract expenses and commissions from request object
+    const { expenses, commissions } = req;
+
+    // Create a map to store total amounts for each month
+    const totalMap = new Map();
+
+    // Sum up totalAmount from expenses
+    expenses.forEach(expense => {
+      const { totalAmount, month } = expense;
+      if (totalMap.has(month)) {
+        totalMap.set(month, totalMap.get(month) + totalAmount);
+      } else {
+        totalMap.set(month, totalAmount);
+      }
+    });
+
+    // Sum up totalCommission from commissions
+    commissions.forEach(commission => {
+      const { totalCommission, month } = commission;
+      if (totalMap.has(month)) {
+        totalMap.set(month, totalMap.get(month) + totalCommission);
+      } else {
+        totalMap.set(month, totalCommission);
+      }
+    });
+
+    // Construct the combined array
+    const totalExpenses = [];
+    totalMap.forEach((totalAmount, month) => {
+      totalExpenses.push({ totalAmount, month });
+    });
+
+    // Sort the combined array by month
+    totalExpenses.sort((a, b) => a.month - b.month);
+
+    // Set req.totalExpenses
+    req.totalExpenses = totalExpenses;
+
+    next();
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
+
 module.exports = {
   getSpendings,
   create,
   getMonthlySpendings,
   getDailySpendings,
   getMonthlyCommissions,
-  getDailyCommissions
+  getDailyCommissions,
+  combineExpensesAndCommissions
 };
