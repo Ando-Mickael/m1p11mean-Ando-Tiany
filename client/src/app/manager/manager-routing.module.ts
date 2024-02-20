@@ -8,11 +8,14 @@ import { ManagerServiceComponent } from './services/manager-service.component';
 import { ManagerSpecialOfferComponent } from './special-offers/manager-special-offer.component';
 import { ManagerFormSpendingComponent } from './spendings/manager-form-spending.component';
 import { ManagerSpendingsComponent } from './spendings/manager-spendings.component';
+import {AuthGuard} from "../auth.guard";
 
 const routes: Routes = [
   {
     path: 'manager',
     component: ManagerHomeComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['manager'] },
     children: [
       { path: 'manager', component: ManagerHomeComponent },
       { path: 'employees', component: ManagerEmployeesComponent },

@@ -7,11 +7,14 @@ import { ClientNotificationsComponent } from './client-notifications.component';
 import { ClientPaymentComponent } from './client-payment.component';
 import { ClientPreferencesComponent } from './client-preferences.component';
 import { ClientServicesComponent } from './client-services.component';
+import {AuthGuard} from "../auth.guard";
 
 const routes: Routes = [
   {
     path: 'client',
     component: ClientHomeComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['client'] },
     children: [
       { path: 'services', component: ClientServicesComponent },
       { path: 'history', component: ClientHistoryComponent },

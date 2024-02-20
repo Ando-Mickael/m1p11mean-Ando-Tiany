@@ -62,6 +62,7 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router
   ) {
+    localStorage.clear();
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(1)]],
