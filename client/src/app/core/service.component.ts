@@ -10,7 +10,6 @@ export type Service = {
 @Component({
   selector: 'app-service',
   template: `
-    <div class="col-sm-12 col-md-12 col-lg-4 ftco-animate d-flex">
       <div class="product d-flex flex-column">
         <a href="#" class="img-prod"
           ><img
@@ -52,7 +51,6 @@ export type Service = {
           </p>
         </div>
       </div>
-    </div>
   `,
 })
 export class ServiceComponent {
