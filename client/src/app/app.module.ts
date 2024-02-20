@@ -16,9 +16,10 @@ import { ConfigService } from './config.service';
 import { HomeComponent } from './core/home.component';
 import { EmployeeModule } from './employee/employee.module';
 import { ManagerModule } from './manager/manager.module';
+import {HomeNavbarComponent} from "./core/home-navbar.component";
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent, HomeComponent, HomeNavbarComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
