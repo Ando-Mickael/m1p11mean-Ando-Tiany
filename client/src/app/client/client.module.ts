@@ -33,5 +33,8 @@ import { ClientServicesComponent } from './client-services.component';
   ],
   imports: [CommonModule, FormsModule, ClientRoutingModule],
   providers: [UserService],
+  exports: [
+    FooterComponent
+  ]
 })
 export class ClientModule {}

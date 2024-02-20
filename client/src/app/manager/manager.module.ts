@@ -18,6 +18,7 @@ import { ManagerServiceComponent } from './services/manager-service.component';
 import { ManagerSpecialOfferComponent } from './special-offers/manager-special-offer.component';
 import { ManagerFormSpendingComponent } from './spendings/manager-form-spending.component';
 import { ManagerSpendingsComponent } from './spendings/manager-spendings.component';
+import {FooterComponent} from "./footer.component";
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { ManagerSpendingsComponent } from './spendings/manager-spendings.compone
     ManagerMonthlyCaComponent,
     ManagerDailyCaComponent,
     ManagerNavbarComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,
