@@ -10,14 +10,48 @@ type Notification = {
 @Component({
   selector: 'client-notifications',
   template: `
-    <div>
-      <h2>Notifications</h2>
-      <div *ngIf="!isLoading">
-        <ul *ngFor="let notification of notifications">
-          <li>
-            {{ notification.type }} : {{ notification.date | relativeTime }}
-          </li>
-        </ul>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 p-3">
+          <div class="card">
+            <div class="card-body">
+              <h1
+                class="card-title"
+                style="text-transform: uppercase; font-weight: bold; font-size: 1.5em"
+              >
+                Notifications
+              </h1>
+              <div *ngIf="!isLoading">
+                <div *ngFor="let notification of notifications">
+                  <div
+                    *ngIf="notification.type == 'offer'"
+                    class="d-flex justify-content-between border-bottom p-3"
+                  >
+                    <p>
+                      <strong class="d-bock"> 🎁 Offre spéciale 🎁 </strong>
+                      Ne rattez nos <a href="/client/services">promotions</a>.
+                    </p>
+                    <p>({{ notification.date | relativeTime }})</p>
+                  </div>
+                  <div
+                    *ngIf="notification.type == 'appointment'"
+                    class="d-flex justify-content-between border-bottom p-3"
+                  >
+                    <p>
+                      <strong class="d-bock"> 📍 Rendez-vous 📍 </strong>
+                      Ne rattez votre
+                      <a href="/client/payment/{{ notification.id }}"
+                        >rendez-vous</a
+                      >
+                      le {{ notification.date | date : 'fullDate' }}.
+                    </p>
+                    <p>({{ notification.date | relativeTime }})</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   `,
