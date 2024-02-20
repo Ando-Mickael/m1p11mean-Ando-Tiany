@@ -4,38 +4,47 @@ import { ConfigService } from '../config.service';
 @Component({
   selector: 'client-history',
   template: `
-    <div *ngIf="!isLoading">
-      <table border="1">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Services</th>
-            <th>Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody *ngFor="let appointment of appointments">
-          <tr>
-            <td>{{ appointment.date }}</td>
-            <td>{{ appointment.serviceIds | json }}</td>
-            <td>{{ appointment.status }}</td>
-            <td><a href="/client/payment/{{ appointment._id }}">Pay</a></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="container my-5">
+      <div class="row d-flex justify-content-center">
+        <div class="col-12">
+          <h1 class="mb-4">Historique des rendez-vous</h1>
+          <div *ngIf="!isLoading">
+            <table class="table">
+              <thead class="thead-primary">
+                <tr class="text-center">
+                  <th>Date</th>
+                  <th>Services</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let appointment of appointments">
+                <tr class="text-center">
+                  <td>{{ appointment.date | date : 'long' }}</td>
+                  <td>
+                    <ul *ngFor="let service of appointment.serviceIds">
+                      <li>{{ service }}</li>
+                    </ul>
+                  </td>
+                  <td *ngIf="appointment.status === 'pending'">
+                    <a
+                      href="/client/payment/{{ appointment._id }}"
+                      class="btn btn-primary"
+                      >Payer</a
+                    >
+                  </td>
+                  <td *ngIf="appointment.status === 'confirmed'">
+                    <span class="badge badge-pill badge-success"
+                      >Déja payé</span
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   `,
-  styles: [
-    `
-      table {
-        border-collapse: collapse;
-      }
-      td,
-      th {
-        padding: 5px;
-      }
-    `,
-  ],
 })
 export class ClientHistoryComponent {
   appointments: any[] = [];
