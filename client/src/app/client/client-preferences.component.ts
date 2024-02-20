@@ -1,8 +1,8 @@
 // preferences.component.ts
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../services/user.service';
-import { ServiceService } from '../services/service.service';
 import { EmployeeService } from '../services/employee.service';
+import { ServiceService } from '../services/service.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'client-preferences',
@@ -16,15 +16,35 @@ import { EmployeeService } from '../services/employee.service';
               <form (ngSubmit)="onSubmit()">
                 <div class="form-group">
                   <label for="servicePreferred">Service Préféré:</label>
-                  <select id="servicePreferred" [(ngModel)]="selectedService" name="servicePreferred" class="form-control">
-                    <option *ngFor="let service of services" [value]="service._id">{{ service.name }}</option>
+                  <select
+                    id="servicePreferred"
+                    [(ngModel)]="selectedService"
+                    name="servicePreferred"
+                    class="form-control"
+                  >
+                    <option
+                      *ngFor="let service of services"
+                      [value]="service._id"
+                    >
+                      {{ service.name }}
+                    </option>
                   </select>
                 </div>
 
                 <div class="form-group">
                   <label for="employeePreferred">Employé Préféré:</label>
-                  <select id="employeePreferred" [(ngModel)]="selectedEmployee" name="employeePreferred" class="form-control">
-                    <option *ngFor="let employee of employees" [value]="employee._id">{{ employee.firstName }} {{ employee.lastName }}</option>
+                  <select
+                    id="employeePreferred"
+                    [(ngModel)]="selectedEmployee"
+                    name="employeePreferred"
+                    class="form-control"
+                  >
+                    <option
+                      *ngFor="let employee of employees"
+                      [value]="employee._id"
+                    >
+                      {{ employee.firstName }} {{ employee.lastName }}
+                    </option>
                   </select>
                 </div>
 
@@ -38,13 +58,8 @@ import { EmployeeService } from '../services/employee.service';
       </div>
     </section>
   `,
-  styles: [
-    `
-
-    `,
-  ],
 })
-export class PreferencesComponent implements OnInit {
+export class ClientPreferencesComponent implements OnInit {
   selectedService: string = '';
   selectedEmployee: string = '';
   services: any[] = [];
@@ -54,7 +69,7 @@ export class PreferencesComponent implements OnInit {
     private userService: UserService,
     private serviceService: ServiceService,
     private employeeService: EmployeeService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.loadServices();
