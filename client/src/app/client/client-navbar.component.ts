@@ -51,13 +51,13 @@ import { Component } from '@angular/core';
               <a href="/client/history" class="nav-link">Historiques</a>
             </li>
             <li class="nav-item">
-              <a href="/client/preferences" class="nav-link">Preferences</a>
+              <a href="/client/preferences" class="nav-link">Préférences</a>
             </li>
             <li class="nav-item">
               <a href="/client/notifications" class="nav-link">Notifications</a>
             </li>
             <li class="nav-item">
-              <a href="/logout" class="nav-link">Logout</a>
+              <a href="/logout" class="nav-link">Déconnexion</a>
             </li>
             <li class="nav-item cta cta-colored">
               <a href="/client/cart" class="nav-link"

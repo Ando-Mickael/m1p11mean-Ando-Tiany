@@ -22,6 +22,7 @@ type Notification = {
                 Notifications
               </h1>
               <div *ngIf="!isLoading">
+                <p *ngIf="notifications.length == 0">Pas de notification.</p>
                 <div *ngFor="let notification of notifications">
                   <div
                     *ngIf="notification.type == 'offer'"
