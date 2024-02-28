@@ -11,13 +11,19 @@ exports.getSpecialOffers = async (req, res, next) => {
 };
 
 exports.saveSpecialOffer = async (req, res, next) => {
-    const { name, description, discountPercentage, startDate, endDate } = req.body;
+    const { name, description, percentages, startDate, endDate } = req.body;
 
     try {
+        // Convert the percentages array to a Map
+        const percentagesMap = new Map();
+        percentages.forEach(item => {
+            percentagesMap.set(item.serviceId, item.percentage);
+        });
+
         const newSpecialOffer = new SpecialOffer({
             name,
             description,
-            discountPercentage,
+            percentages: percentagesMap, // Assign the Map to percentages field
             startDate,
             endDate,
         });
@@ -28,6 +34,7 @@ exports.saveSpecialOffer = async (req, res, next) => {
         req["offer"] = savedSpecialOffer;
         next();
     } catch (error) {
+        console.log(error);
         next(error);
     }
 };

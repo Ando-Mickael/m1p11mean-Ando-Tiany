@@ -20,6 +20,10 @@ const specialOfferSchema = new mongoose.Schema({
   endDate: {
     type: Date,
     required: false
+  },
+  percentages: {
+    type: Map,
+    of: Number // Assuming the value is a number representing the percentage
   }
 }, {
   timestamps: true

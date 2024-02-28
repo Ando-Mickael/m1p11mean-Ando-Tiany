@@ -18,7 +18,7 @@ export class SpecialOfferService {
   createSpecialOffer(data: {
     name: string;
     description: string;
-    discountPercentage: number;
+    percentages: { [serviceId: string]: number };
     startDate: string;
     endDate: string;
   }): Observable<any> {
