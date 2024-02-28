@@ -4,127 +4,161 @@ import { ServiceService } from '../../services/service.service';
 @Component({
   selector: 'manager-service',
   template: `
-          <div class="row">
-              <div class="col-md-3">
-                  <section class="ftco-section">
-                      <div class="container">
-                          <div class="row justify-content-center">
-                              <div class="col-xl-10 ftco-animate">
-                                  <div>
-                                      <h2>Créer une nouvelle Service</h2>
+    <div class="row">
+      <div class="col-md-3">
+        <section class="ftco-section">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-xl-10 ftco-animate">
+                <div>
+                  <h2>Créer une nouvelle Service</h2>
 
-                                      <form (ngSubmit)="onSubmit()" class="billing-form">
-                                          <div class="form-group">
-                                              <label for="name">Nom:</label>
-                                              <input
-                                                      type="text"
-                                                      id="name"
-                                                      [(ngModel)]="serviceName"
-                                                      name="name"
-                                                      required
-                                                      class="form-control"
-                                                      placeholder=""
-                                              />
-                                          </div>
+                  <form (ngSubmit)="onSubmit()" class="billing-form">
+                    <div class="form-group">
+                      <label for="name">Nom:</label>
+                      <input
+                        type="text"
+                        id="name"
+                        [(ngModel)]="serviceName"
+                        name="name"
+                        required
+                        class="form-control"
+                        placeholder=""
+                      />
+                    </div>
 
-                                          <div class="form-group">
-                                              <label for="price">Prix:</label>
-                                              <input
-                                                      type="number"
-                                                      id="price"
-                                                      [(ngModel)]="servicePrice"
-                                                      name="price"
-                                                      required
-                                                      class="form-control"
-                                                      placeholder=""
-                                              />
-                                          </div>
+                    <div class="form-group">
+                      <label for="price">Prix:</label>
+                      <input
+                        type="number"
+                        id="price"
+                        [(ngModel)]="servicePrice"
+                        name="price"
+                        required
+                        class="form-control"
+                        placeholder=""
+                      />
+                    </div>
 
-                                          <div class="form-group">
-                                              <label for="duration">Durée:</label>
-                                              <input
-                                                      type="number"
-                                                      id="duration"
-                                                      [(ngModel)]="serviceDuration"
-                                                      name="duration"
-                                                      required
-                                                      class="form-control"
-                                                      placeholder=""
-                                              />
-                                          </div>
+                    <div class="form-group">
+                      <label for="duration">Durée:</label>
+                      <input
+                        type="number"
+                        id="duration"
+                        [(ngModel)]="serviceDuration"
+                        name="duration"
+                        required
+                        class="form-control"
+                        placeholder=""
+                      />
+                    </div>
 
-                                          <div class="form-group">
-                                              <label for="commissionRate">Commission:</label>
-                                              <input
-                                                      type="number"
-                                                      id="commissionRate"
-                                                      [(ngModel)]="serviceCommissionRate"
-                                                      name="commissionRate"
-                                                      required
-                                                      class="form-control"
-                                                      placeholder=""
-                                              />
-                                          </div>
+                    <div class="form-group">
+                      <label for="commissionRate">Commission:</label>
+                      <input
+                        type="number"
+                        id="commissionRate"
+                        [(ngModel)]="serviceCommissionRate"
+                        name="commissionRate"
+                        required
+                        class="form-control"
+                        placeholder=""
+                      />
+                    </div>
 
-                                          <button type="submit" class="btn btn-primary">Créer le service</button>
-                                      </form>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </section>
+                    <button type="submit" class="btn btn-primary">
+                      Créer le service
+                    </button>
+                  </form>
+                </div>
               </div>
-              <div class="col-md-9">
-                  <section class="ftco-section ftco-cart">
-                      <div class="container">
-                          <h2>Toutes les Services</h2>
-                          <table class="table">
-                              <thead class="thead-primary">
-                              <tr>
-                                  <th>Nom</th>
-                                  <th>Prix</th>
-                                  <th>Durée</th>
-                                  <th>Commission</th>
-                                  <th></th>
-                              </tr>
-                              </thead>
-                              <tbody>
-                              <ng-container *ngFor="let service of services; let i = index">
-                                  <tr *ngIf="!service.isEditing; else editRow" class="text-center">
-                                      <td>{{ service.name }}</td>
-                                      <td>{{ service.price }}</td>
-                                      <td>{{ service.duration }}</td>
-                                      <td>{{ service.commissionRate }}</td>
-                                      <td>
-                                          <button class="px-2" (click)="toggleEdit(i)">Modifier</button>
-                                          <button class="ml-2 px-2" (click)="deleteService(service._id)">Supprimer
-                                          </button>
-                                      </td>
-                                  </tr>
-                                  <ng-template #editRow>
-                                      <tr>
-                                          <td><input type="text" [(ngModel)]="service.name" class="form-control"/></td>
-                                          <td><input type="number" [(ngModel)]="service.price" class="form-control"/>
-                                          </td>
-                                          <td><input type="number" [(ngModel)]="service.duration" class="form-control"/>
-                                          </td>
-                                          <td>
-                                              <input type="number" [(ngModel)]="service.commissionRate"
-                                                     class="form-control"/>
-                                          </td>
-                                          <td>
-                                              <button class="px-2" (click)="updateService(service)">Enregistrer</button>
-                                              <button class="ml-2 px-2" (click)="cancelEdit(service)">Annuler</button>
-                                          </td>
-                                      </tr>
-                                  </ng-template>
-                              </ng-container>
-                              </tbody>
-                          </table>
-                      </div>
-                  </section>
-              </div>
+            </div>
           </div>
+        </section>
+      </div>
+      <div class="col-md-9">
+        <section class="ftco-section ftco-cart">
+          <div class="container">
+            <h2>Toutes les Services</h2>
+            <table class="table">
+              <thead class="thead-primary">
+                <tr>
+                  <th>Nom</th>
+                  <th>Prix</th>
+                  <th>Durée</th>
+                  <th>Commission</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let service of services; let i = index">
+                  <tr
+                    *ngIf="!service.isEditing; else editRow"
+                    class="text-center"
+                  >
+                    <td>{{ service.name }}</td>
+                    <td>{{ service.price }}</td>
+                    <td>{{ service.duration }}</td>
+                    <td>{{ service.commissionRate }}</td>
+                    <td>
+                      <button class="px-2" (click)="toggleEdit(i)">
+                        Modifier
+                      </button>
+                      <button
+                        class="ml-2 px-2"
+                        (click)="deleteService(service._id)"
+                      >
+                        Supprimer
+                      </button>
+                    </td>
+                  </tr>
+                  <ng-template #editRow>
+                    <tr>
+                      <td>
+                        <input
+                          type="text"
+                          [(ngModel)]="service.name"
+                          class="form-control"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          [(ngModel)]="service.price"
+                          class="form-control"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          [(ngModel)]="service.duration"
+                          class="form-control"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          [(ngModel)]="service.commissionRate"
+                          class="form-control"
+                        />
+                      </td>
+                      <td>
+                        <button class="px-2" (click)="updateService(service)">
+                          Enregistrer
+                        </button>
+                        <button class="ml-2 px-2" (click)="cancelEdit(service)">
+                          Annuler
+                        </button>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
   `,
 })
 export class ManagerServiceComponent implements OnInit {

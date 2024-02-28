@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '../auth.guard';
 import { ManagerStatistiquesComponent } from './dashboard/manager-statistiques.component';
 import { ManagerEmployeeComponent } from './employees/manager-employee.component';
 import { ManagerEmployeesComponent } from './employees/manager-employees.component';
 import { ManagerHomeComponent } from './manager-home.component';
 import { ManagerServiceComponent } from './services/manager-service.component';
 import { ManagerSpecialOfferComponent } from './special-offers/manager-special-offer.component';
-import { ManagerFormSpendingComponent } from './spendings/manager-form-spending.component';
 import { ManagerSpendingsComponent } from './spendings/manager-spendings.component';
-import {AuthGuard} from "../auth.guard";
 
 const routes: Routes = [
   {
@@ -21,10 +20,7 @@ const routes: Routes = [
       { path: 'employees', component: ManagerEmployeesComponent },
       { path: 'employees/:id', component: ManagerEmployeeComponent },
       { path: 'spendings', component: ManagerSpendingsComponent },
-      {
-        path: 'form-spending',
-        component: ManagerFormSpendingComponent,
-      },
+
       {
         path: 'special-offer',
         component: ManagerSpecialOfferComponent,

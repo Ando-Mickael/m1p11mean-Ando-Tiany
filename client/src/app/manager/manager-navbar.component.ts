@@ -44,14 +44,26 @@ import { Component } from '@angular/core';
 
         <div class="collapse navbar-collapse" id="ftco-nav">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a class="nav-link" href="manager/employees">Employees</a></li>
-            <li class="nav-item"><a class="nav-link" href="manager/form-employee">Add employee</a></li>
-            <li class="nav-item"><a class="nav-link" href="manager/spendings">Spendings</a></li>
-            <li class="nav-item"><a class="nav-link" href="manager/form-spending">Add spending</a></li>
-            <li class="nav-item"><a class="nav-link" href="manager/services">Services</a></li>
-            <li class="nav-item"><a class="nav-link" href="manager/special-offer">Special offer</a></li>
-            <li class="nav-item"><a class="nav-link" href="manager/statistiques">Statistiques</a></li>
-            <li class="nav-item"><a class="nav-link" href="logout">Logout</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="manager/employees">Employés</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="manager/spendings">Dépenses</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="manager/services">Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="manager/special-offer"
+                >Offres spéciales</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="manager/statistiques">Statistiques</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="logout">Déconnexion</a>
+            </li>
           </ul>
         </div>
       </div>
