@@ -17,9 +17,9 @@ exports.saveSpecialOffer = async (req, res, next) => {
         const newSpecialOffer = new SpecialOffer({
             name,
             description,
-            /*discountPercentage,
+            discountPercentage,
             startDate,
-            endDate,*/
+            endDate,
         });
 
         // Save the special offer to the database
