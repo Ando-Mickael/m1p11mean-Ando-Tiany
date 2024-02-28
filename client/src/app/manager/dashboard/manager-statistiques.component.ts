@@ -50,16 +50,28 @@ import { Component } from '@angular/core';
         </div>
       </div>
 
-      <div class="my-4">
-        <h2>Total monthly appointments</h2>
-        <div class="card">
-          <div class="card-body">
-            <manager-total-monthly-appointments></manager-total-monthly-appointments>
+      <div class="row mt-3">
+        <div class="col-md-12">
+          <h1>Nombre de rendez-vous</h1>
+        </div>
+      </div>
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <manager-daily-appointments-by-month-and-year></manager-daily-appointments-by-month-and-year>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <manager-monthly-appointments-by-year></manager-monthly-appointments-by-year>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
   `,
   styles: [],
 })

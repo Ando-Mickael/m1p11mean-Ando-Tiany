@@ -1,14 +1,12 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { ConfigService } from '../../config.service';
 
 @Component({
-  selector: 'manager-daily-ca',
+  selector: 'manager-daily-appointments-by-month-and-year',
   template: `
     <div>
-      <h2>Chiffres d'affaire par jours</h2>
       <label for="year">Année:</label>
       <select id="year" [(ngModel)]="selectedYear" (change)="fetchData()">
         <option *ngFor="let year of years" [value]="year">{{ year }}</option>
@@ -35,14 +33,14 @@ import { ConfigService } from '../../config.service';
   `,
   styles: [],
 })
-export class ManagerDailyCaComponent implements OnInit {
+export class ManagerDailyAppointmentsByMonthAndYear implements OnInit {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
   lineChartData: ChartConfiguration['data'] = {
     datasets: [
       {
         data: [],
-        label: "Total Chiffre d'affaire",
+        label: 'Total Appointments',
         borderColor: 'black',
         backgroundColor: 'rgba(255,0,0,0.3)',
       },
@@ -61,7 +59,7 @@ export class ManagerDailyCaComponent implements OnInit {
 
   apiUrl: string;
 
-  constructor(private configService: ConfigService, private http: HttpClient) {
+  constructor(private configService: ConfigService) {
     this.apiUrl = configService.getApiUrl();
   }
 
@@ -79,45 +77,28 @@ export class ManagerDailyCaComponent implements OnInit {
   }
 
   fetchData() {
-    this.http
-      .get<any[]>(
-        `${this.apiUrl}/sales/income/${this.selectedYear}/${this.selectedMonth}`
-      )
-      .subscribe(
-        (data) => {
-          // Determine the number of days in the selected month
-          const daysInMonth = new Date(
-            this.selectedYear,
-            this.selectedMonth,
-            0
-          ).getDate();
+    fetch(
+      `${this.apiUrl}/managers/daily-appointments-by-month-and-year?year=${this.selectedYear}&month=${this.selectedMonth}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const labels = data.map((data: any) => data.day);
+        const dataPoints = data.map((data: any) => data.count);
+        console.log(labels, dataPoints);
 
-          // Initialize an array with 0 for each day of the month
-          const dailyIncome = Array.from({ length: daysInMonth }, () => 0);
-          const labels = Array.from(
-            { length: daysInMonth },
-            (_, i) => `${i + 1}`
-          );
+        this.lineChartData.datasets = [
+          {
+            data: dataPoints,
+            label: 'Nombre de rendez-vous par jour',
+            borderColor: 'black',
+            backgroundColor: 'rgba(255,0,0,0.3)',
+          },
+        ];
+        this.lineChartData.labels = labels;
 
-          // Update the array with fetched data
-          data.forEach((item) => {
-            if (item.day >= 1 && item.day <= daysInMonth) {
-              dailyIncome[item.day - 1] = item.totalIncome;
-            }
-          });
-
-          // Update the chart data
-          this.lineChartData.datasets[0].data = dailyIncome;
-          this.lineChartData.labels = labels;
-
-          // Force chart update
-          if (this.chart) {
-            this.chart.update();
-          }
-        },
-        (error) => {
-          console.error('Error fetching data:', error);
+        if (this.chart) {
+          this.chart.update();
         }
-      );
+      });
   }
 }

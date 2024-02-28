@@ -1,26 +1,29 @@
 const Appointment = require("../models/Appointment");
 const User = require("../models/User");
-const { getMonthlyAppointments } = require("../services/appointment.service");
+const {
+  getDailyAppointmentsByMonthAndYear,
+  getMonthlyAppointmentsByYear,
+} = require("../services/appointment.service");
 
 const getAppointments = async (req, res, next) => {
   try {
     req.appointments = await Appointment.find()
-        .populate({
-          path: 'userId',
-          select: '_id firstName lastName',
-        })
-        .populate({
-          path: 'employeeId',
-          select: '_id firstName lastName',
-        })
-        .populate({
-          path: 'serviceIds', // Update to serviceIds
-          select: 'name price duration commissionRate',
-        });
+      .populate({
+        path: "userId",
+        select: "_id firstName lastName",
+      })
+      .populate({
+        path: "employeeId",
+        select: "_id firstName lastName",
+      })
+      .populate({
+        path: "serviceIds", // Update to serviceIds
+        select: "name price duration commissionRate",
+      });
     next();
   } catch (error) {
-    console.error('Error getting appointments', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error getting appointments", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -31,50 +34,50 @@ const getAppointmentsByUserId = async (req, res, next) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: "User not found" });
     }
 
     let appointments;
 
-    if (user.role === 'client') {
+    if (user.role === "client") {
       // If the user is a client, get appointments where userId = id
       appointments = await Appointment.find({ userId })
-          .populate({
-            path: 'userId',
-            select: '_id firstName lastName',
-          })
-          .populate({
-            path: 'employeeId',
-            select: '_id firstName lastName',
-          })
-          .populate({
-            path: 'serviceIds', // Update to serviceIds
-            select: 'name price duration commissionRate',
-          });
-    } else if (user.role === 'employee') {
+        .populate({
+          path: "userId",
+          select: "_id firstName lastName",
+        })
+        .populate({
+          path: "employeeId",
+          select: "_id firstName lastName",
+        })
+        .populate({
+          path: "serviceIds", // Update to serviceIds
+          select: "name price duration commissionRate",
+        });
+    } else if (user.role === "employee") {
       // If the user is an employee, get appointments where employeeId = id
       appointments = await Appointment.find({ employeeId: userId })
-          .populate({
-            path: 'userId',
-            select: '_id firstName lastName',
-          })
-          .populate({
-            path: 'employeeId',
-            select: '_id firstName lastName',
-          })
-          .populate({
-            path: 'serviceIds', // Update to serviceIds
-            select: 'name price duration commissionRate',
-          });
+        .populate({
+          path: "userId",
+          select: "_id firstName lastName",
+        })
+        .populate({
+          path: "employeeId",
+          select: "_id firstName lastName",
+        })
+        .populate({
+          path: "serviceIds", // Update to serviceIds
+          select: "name price duration commissionRate",
+        });
     } else {
-      return res.status(400).json({ error: 'Invalid user role' });
+      return res.status(400).json({ error: "Invalid user role" });
     }
 
     req.appointments = appointments;
     next();
   } catch (error) {
-    console.error('Error getting appointments by user ID', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error getting appointments by user ID", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -94,7 +97,9 @@ async function getMonthlyIncome(req, res, next) {
   try {
     const { year } = req.params;
 
-    const allAppointments = await Appointment.find({ status: "confirmed" }).populate("serviceIds");
+    const allAppointments = await Appointment.find({
+      status: "confirmed",
+    }).populate("serviceIds");
 
     // Filter appointments for the specified year
     const filteredAppointments = allAppointments.filter((appointment) => {
@@ -131,15 +136,17 @@ async function getDailyIncome(req, res, next) {
   try {
     const { year, month } = req.params;
 
-    const allAppointments = await Appointment.find({ status: "confirmed" }).populate("serviceIds");
+    const allAppointments = await Appointment.find({
+      status: "confirmed",
+    }).populate("serviceIds");
 
     // Filter appointments for the specified year and month
     const filteredAppointments = allAppointments.filter((appointment) => {
       const appointmentYear = new Date(appointment.date).getFullYear();
       const appointmentMonth = new Date(appointment.date).getMonth() + 1; // Month is 0-indexed
       return (
-          appointmentYear.toString() === year &&
-          appointmentMonth.toString() === month
+        appointmentYear.toString() === year &&
+        appointmentMonth.toString() === month
       );
     });
 
@@ -264,14 +271,28 @@ async function confirmedAppointment(req, res) {
   }
 }
 
-async function totalMonthlyAppointments(req, res) {
+async function dailyAppointmentsByMonthAndYear(req, res) {
   const { year, month } = req.query;
   try {
-    getMonthlyAppointments(Number(year), Number(month)).then((data) => {
-      res.json(data);
-    });
+    getDailyAppointmentsByMonthAndYear(Number(year), Number(month)).then(
+      (data) => {
+        res.json(data);
+      }
+    );
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+async function monthlyAppointmentsByYear(req, res) {
+  const { year } = req.query;
+
+  try {
+    const allAppointments = await getMonthlyAppointmentsByYear(Number(year));
+
+    res.json(allAppointments);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
   }
 }
 
@@ -285,5 +306,6 @@ module.exports = {
   create,
   getByUserId,
   confirmedAppointment,
-  totalMonthlyAppointments,
+  dailyAppointmentsByMonthAndYear,
+  monthlyAppointmentsByYear,
 };

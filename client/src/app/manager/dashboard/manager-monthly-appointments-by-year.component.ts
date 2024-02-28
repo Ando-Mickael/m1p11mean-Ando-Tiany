@@ -4,19 +4,12 @@ import { BaseChartDirective } from 'ng2-charts';
 import { ConfigService } from '../../config.service';
 
 @Component({
-  selector: 'manager-total-monthly-appointments',
+  selector: 'manager-monthly-appointments-by-year',
   template: `
     <div>
-      <label for="year">Year:</label>
+      <label for="year">Année:</label>
       <select id="year" [(ngModel)]="selectedYear" (change)="fetchData()">
         <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-      </select>
-
-      <label for="month">Month:</label>
-      <select id="month" [(ngModel)]="selectedMonth" (change)="fetchData()">
-        <option *ngFor="let month of months" [value]="month">
-          {{ month }}
-        </option>
       </select>
     </div>
 
@@ -33,14 +26,14 @@ import { ConfigService } from '../../config.service';
   `,
   styles: [],
 })
-export class TotalMonthlyAppointments implements OnInit {
+export class ManagerMonthlyAppointmentsByYear implements OnInit {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
   lineChartData: ChartConfiguration['data'] = {
     datasets: [
       {
         data: [],
-        label: 'Total Appointments',
+        label: 'Nombre de rendez-vous par mois',
         borderColor: 'black',
         backgroundColor: 'rgba(255,0,0,0.3)',
       },
@@ -53,9 +46,7 @@ export class TotalMonthlyAppointments implements OnInit {
   lineChartType: ChartType = 'line';
 
   years: number[] = [];
-  months: number[] = Array.from({ length: 12 }, (_, i) => i + 1);
   selectedYear: number = new Date().getFullYear();
-  selectedMonth: number = new Date().getMonth() + 1;
 
   apiUrl: string;
 
@@ -78,18 +69,18 @@ export class TotalMonthlyAppointments implements OnInit {
 
   fetchData() {
     fetch(
-      `${this.apiUrl}/managers/total-monthly-appointments?year=${this.selectedYear}&month=${this.selectedMonth}`
+      `${this.apiUrl}/managers/monthly-appointments?year=${this.selectedYear}`
     )
       .then((response) => response.json())
       .then((data) => {
-        const labels = data.map((data: any) => data.day);
+        const labels = data.map((data: any) => data.month);
         const dataPoints = data.map((data: any) => data.count);
         console.log(labels, dataPoints);
 
         this.lineChartData.datasets = [
           {
             data: dataPoints,
-            label: 'Total Appointments',
+            label: 'Nombre de rendez-vous par mois',
             borderColor: 'black',
             backgroundColor: 'rgba(255,0,0,0.3)',
           },

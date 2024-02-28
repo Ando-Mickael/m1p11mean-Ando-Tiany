@@ -1,6 +1,16 @@
 const User = require("../models/User");
 const { getTodayNotifications } = require("../services/user.service");
 
+async function getUsers(req, res) {
+  try {
+    const users = await User.find();
+
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
 async function getUserById(req, res, next) {
   const userId = req.params.id;
 
@@ -73,6 +83,7 @@ async function todayNotifications(req, res) {
 }
 
 module.exports = {
+  getUsers,
   getUserById,
   updateUser,
   todayNotifications,
