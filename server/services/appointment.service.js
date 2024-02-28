@@ -1,6 +1,6 @@
 const Appointment = require("../models/Appointment");
 
-async function getMonthlyAppointments(year, month) {
+async function getDailyAppointmentsByMonthAndYear(year, month) {
   const startOfMonth = new Date(year, month - 1, 1);
   const endOfMonth = new Date(year, month, 0);
 
@@ -56,7 +56,46 @@ async function getAppointmentsForReminder(userId) {
   return appointments;
 }
 
+async function getMonthlyAppointmentsByYear(year) {
+  const startOfYear = new Date(year, 0, 1); // January 1st
+  const endOfYear = new Date(year, 11, 31); // December 31st
+
+  try {
+    const result = await Appointment.aggregate([
+      {
+        $match: {
+          date: {
+            $gte: startOfYear,
+            $lte: endOfYear,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { $month: "$date" },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const appointmentsByMonth = Array.from({ length: 12 }, (_, index) => ({
+      month: index + 1,
+      count: 0,
+    }));
+
+    result.forEach((item) => {
+      appointmentsByMonth[item._id - 1].count = item.count;
+    });
+
+    return appointmentsByMonth;
+  } catch (error) {
+    console.error("Error fetching appointments by year:", error);
+    throw error;
+  }
+}
+
 module.exports = {
-  getMonthlyAppointments,
+  getDailyAppointmentsByMonthAndYear,
   getAppointmentsForReminder,
+  getMonthlyAppointmentsByYear,
 };
