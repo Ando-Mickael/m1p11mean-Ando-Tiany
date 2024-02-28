@@ -13,16 +13,28 @@ import { SpecialOfferService } from '../../services/special-offer.service';
               <h2>Créer une Offre Spéciale</h2>
 
               <form [formGroup]="specialOfferForm" (ngSubmit)="onSubmit()" class="billing-form">
-                    <div class="form-group">
-                      <label for="name">Nom:</label>
-                      <input type="text" id="name" formControlName="name" class="form-control" placeholder="">
-                    </div>
-                    <div class="form-group">
-                      <label for="description">Description:</label>
-                      <textarea id="description" formControlName="description" class="form-control" placeholder=""></textarea>
-                    </div>
-                  <div class="w-100"></div>
-                    <button type="submit" class="btn btn-primary py-3 px-4">Create Special Offer</button>
+                <div class="form-group">
+                  <label for="name">Nom:</label>
+                  <input type="text" id="name" formControlName="name" class="form-control" placeholder="">
+                </div>
+                <div class="form-group">
+                  <label for="description">Description:</label>
+                  <textarea id="description" formControlName="description" class="form-control" placeholder=""></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="discountPercentage">Pourcentage de réduction:</label>
+                  <input type="number" id="discountPercentage" formControlName="discountPercentage" class="form-control" placeholder="">
+                </div>
+                <div class="form-group">
+                  <label for="startDate">Date de début:</label>
+                  <input type="date" id="startDate" formControlName="startDate" class="form-control" placeholder="">
+                </div>
+                <div class="form-group">
+                  <label for="endDate">Date de fin:</label>
+                  <input type="date" id="endDate" formControlName="endDate" class="form-control" placeholder="">
+                </div>
+                <div class="w-100"></div>
+                <button type="submit" class="btn btn-primary py-3 px-4">Create Special Offer</button>
               </form>
             </div>
           </div>
@@ -41,15 +53,18 @@ export class ManagerSpecialOfferComponent {
     this.specialOfferForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
+      discountPercentage: [0, Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
     });
   }
 
   onSubmit() {
     if (this.specialOfferForm.valid) {
-      const { name, description } = this.specialOfferForm.value;
+      const { name, description, discountPercentage, startDate, endDate } = this.specialOfferForm.value;
 
       this.specialOfferService
-        .createSpecialOffer({ name, description })
+        .createSpecialOffer({ name, description, discountPercentage, startDate, endDate })
         .subscribe(
           (createdOffer) => {
             console.log('Special offer created successfully', createdOffer);

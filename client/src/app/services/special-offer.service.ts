@@ -18,6 +18,9 @@ export class SpecialOfferService {
   createSpecialOffer(data: {
     name: string;
     description: string;
+    discountPercentage: number;
+    startDate: string;
+    endDate: string;
   }): Observable<any> {
     return this.http.post(`${this.apiUrl}/special-offers`, data);
   }

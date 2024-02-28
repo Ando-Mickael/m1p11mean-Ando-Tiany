@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
         <div class="hero-section">
           <div class="hero-section">
             <h1>Rejoignez notre Salon de Beauté</h1>
-            <p>Découvrez un monde de beauté et de détente</p>
+            <p class="text-dark">Découvrez un monde de beauté et de détente</p>
             <a href="signup">Commencez votre expérience dès maintenant !</a>
             <br>
             <a href="login">Connectez-vous</a>
@@ -103,10 +103,6 @@ import { Component } from '@angular/core';
       align-items: center;
       text-align: center;
       color: white;
-    }
-
-    p {
-      color: black;
     }
 
     .hero-section h1 {
