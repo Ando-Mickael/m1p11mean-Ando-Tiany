@@ -7,7 +7,7 @@ import { ConfigService } from '../../config.service';
   selector: 'manager-monthly-appointments-by-year',
   template: `
     <div>
-      <label for="year">Year:</label>
+      <label for="year">Année:</label>
       <select id="year" [(ngModel)]="selectedYear" (change)="fetchData()">
         <option *ngFor="let year of years" [value]="year">{{ year }}</option>
       </select>

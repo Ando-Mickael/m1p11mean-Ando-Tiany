@@ -4,15 +4,15 @@ import { BaseChartDirective } from 'ng2-charts';
 import { ConfigService } from '../../config.service';
 
 @Component({
-  selector: 'manager-total-monthly-appointments',
+  selector: 'manager-daily-appointments-by-month-and-year',
   template: `
     <div>
-      <label for="year">Year:</label>
+      <label for="year">Année:</label>
       <select id="year" [(ngModel)]="selectedYear" (change)="fetchData()">
         <option *ngFor="let year of years" [value]="year">{{ year }}</option>
       </select>
 
-      <label for="month">Month:</label>
+      <label for="month">Mois:</label>
       <select id="month" [(ngModel)]="selectedMonth" (change)="fetchData()">
         <option *ngFor="let month of months" [value]="month">
           {{ month }}
@@ -33,7 +33,7 @@ import { ConfigService } from '../../config.service';
   `,
   styles: [],
 })
-export class TotalMonthlyAppointments implements OnInit {
+export class ManagerDailyAppointmentsByMonthAndYear implements OnInit {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
   lineChartData: ChartConfiguration['data'] = {
@@ -89,7 +89,7 @@ export class TotalMonthlyAppointments implements OnInit {
         this.lineChartData.datasets = [
           {
             data: dataPoints,
-            label: 'Total Appointments',
+            label: 'Nombre de rendez-vous par jour',
             borderColor: 'black',
             backgroundColor: 'rgba(255,0,0,0.3)',
           },

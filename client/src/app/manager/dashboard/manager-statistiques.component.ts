@@ -59,7 +59,7 @@ import { Component } from '@angular/core';
         <div class="col-md-6">
           <div class="card">
             <div class="card-body">
-              <manager-total-monthly-appointments></manager-total-monthly-appointments>
+              <manager-daily-appointments-by-month-and-year></manager-daily-appointments-by-month-and-year>
             </div>
           </div>
         </div>

@@ -9,12 +9,12 @@ import { ConfigService } from '../../config.service';
   template: `
     <div>
       <h2>Chiffres d'affaire par jours</h2>
-      <label for="year">Year:</label>
+      <label for="year">Année:</label>
       <select id="year" [(ngModel)]="selectedYear" (change)="fetchData()">
         <option *ngFor="let year of years" [value]="year">{{ year }}</option>
       </select>
 
-      <label for="month">Month:</label>
+      <label for="month">Mois:</label>
       <select id="month" [(ngModel)]="selectedMonth" (change)="fetchData()">
         <option *ngFor="let month of months" [value]="month">
           {{ month }}
