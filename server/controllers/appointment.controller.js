@@ -271,7 +271,7 @@ async function confirmedAppointment(req, res) {
   }
 }
 
-async function totalMonthlyAppointments(req, res) {
+async function dailyAppointmentsByMonthAndYear(req, res) {
   const { year, month } = req.query;
   try {
     getDailyAppointmentsByMonthAndYear(Number(year), Number(month)).then(
@@ -306,6 +306,6 @@ module.exports = {
   create,
   getByUserId,
   confirmedAppointment,
-  totalMonthlyAppointments,
+  dailyAppointmentsByMonthAndYear,
   monthlyAppointmentsByYear,
 };

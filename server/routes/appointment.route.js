@@ -17,11 +17,6 @@ router.get(
 
 router.get("/users/:userId", appointmentController.getByUserId);
 
-router.get(
-  "/total-monthly-appointments",
-  appointmentController.totalMonthlyAppointments
-);
-
 // post
 router.post("/", appointmentController.create);
 

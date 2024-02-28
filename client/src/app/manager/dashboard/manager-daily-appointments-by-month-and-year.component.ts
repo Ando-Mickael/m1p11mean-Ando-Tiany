@@ -78,7 +78,7 @@ export class ManagerDailyAppointmentsByMonthAndYear implements OnInit {
 
   fetchData() {
     fetch(
-      `${this.apiUrl}/managers/total-monthly-appointments?year=${this.selectedYear}&month=${this.selectedMonth}`
+      `${this.apiUrl}/managers/daily-appointments-by-month-and-year?year=${this.selectedYear}&month=${this.selectedMonth}`
     )
       .then((response) => response.json())
       .then((data) => {
