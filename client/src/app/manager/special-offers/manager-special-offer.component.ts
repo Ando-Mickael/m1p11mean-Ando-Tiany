@@ -7,58 +7,68 @@ import { ServiceService } from "../../services/service.service";
 @Component({
   selector: 'manager-special-offer',
   template: `
-    <section class="ftco-section" *ngIf="specialOfferForm">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-xl-10 ftco-animate">
-            <div>
-              <h2>Créer une Offre Spéciale</h2>
+      <section class="ftco-section" *ngIf="specialOfferForm">
+          <div class="container">
+              <div class="row justify-content-center">
+                  <div class="col-xl-10 ftco-animate">
+                      <div>
+                          <h2>Créer une Offre Spéciale</h2>
 
-              <form [formGroup]="specialOfferForm" (ngSubmit)="onSubmit()" *ngIf="specialOfferForm">
-                <label for="name">Name</label>
-                <input type="text" id="name" formControlName="name">
-                <div *ngIf="specialOfferForm.get('name')?.invalid && specialOfferForm.get('name')?.touched">
-                  <small>Name is required</small>
-                </div>
+                          <form [formGroup]="specialOfferForm" (ngSubmit)="onSubmit()" *ngIf="specialOfferForm"
+                                class="billing-form">
+                              <div class="form-group">
+                                  <label for="name">Name</label>
+                                  <input type="text" id="name" formControlName="name" class="form-control">
+                                  <div *ngIf="specialOfferForm.get('name')?.invalid && specialOfferForm.get('name')?.touched">
+                                      <small>Name is required</small>
+                                  </div>
+                              </div>
 
-                <label for="description">Description</label>
-                <textarea id="description" formControlName="description"></textarea>
-                <div *ngIf="specialOfferForm.get('description')?.invalid && specialOfferForm.get('description')?.touched">
-                  <small>Description is required</small>
-                </div>
+                              <div class="form-group">
+                                  <label for="description">Description</label>
+                                  <textarea id="description" formControlName="description"
+                                            class="form-control"></textarea>
+                                  <div *ngIf="specialOfferForm.get('description')?.invalid && specialOfferForm.get('description')?.touched">
+                                      <small>Description is required</small>
+                                  </div>
+                              </div>
 
-                <label for="startDate">Start Date</label>
-                <input type="date" id="startDate" formControlName="startDate">
-                <div *ngIf="specialOfferForm.get('startDate')?.invalid && specialOfferForm.get('startDate')?.touched">
-                  <small>Start Date is required</small>
-                </div>
+                              <div class="form-group">
+                                  <label for="startDate">Start Date</label>
+                                  <input type="date" id="startDate" formControlName="startDate" class="form-control">
+                                  <div *ngIf="specialOfferForm.get('startDate')?.invalid && specialOfferForm.get('startDate')?.touched">
+                                      <small>Start Date is required</small>
+                                  </div>
 
-                <label for="endDate">End Date</label>
-                <input type="date" id="endDate" formControlName="endDate">
-                <div *ngIf="specialOfferForm.get('endDate')?.invalid && specialOfferForm.get('endDate')?.touched">
-                  <small>End Date is required</small>
-                </div>
+                                  <label for="endDate">End Date</label>
+                                  <input type="date" id="endDate" formControlName="endDate" class="form-control">
+                                  <div *ngIf="specialOfferForm.get('endDate')?.invalid && specialOfferForm.get('endDate')?.touched">
+                                      <small>End Date is required</small>
+                                  </div>
+                              </div>
 
-                <div formArrayName="percentages">
-                  <div *ngFor="let percentageGroup of getPercentageControls(); let i = index">
-                    <div [formGroupName]="i">
-                      <label *ngIf="services && services[i]">{{ services[i]?.name }}</label>
-                      <input type="number" formControlName="percentage">
-                      <div *ngIf="percentageGroup.get('percentage')?.invalid && percentageGroup.get('percentage')?.touched">
-                        <small>Percentage is required</small>
+                              <div class="form-group">
+                                  <div formArrayName="percentages">
+                                      <div *ngFor="let percentageGroup of getPercentageControls(); let i = index">
+                                          <div [formGroupName]="i">
+                                              <label *ngIf="services && services[i]">{{ services[i]?.name }}</label>
+                                              <input type="number" formControlName="percentage"  class="form-control">
+                                              <div *ngIf="percentageGroup.get('percentage')?.invalid && percentageGroup.get('percentage')?.touched">
+                                                  <small>Percentage is required</small>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <button  class="btn btn-primary py-3 px-4" type="submit" [disabled]="specialOfferForm.invalid">Submit</button>
+                          </form>
+
                       </div>
-                    </div>
                   </div>
-                </div>
-
-                <button type="submit" [disabled]="specialOfferForm.invalid">Submit</button>
-              </form>
-
-            </div>
+              </div>
           </div>
-        </div>
-      </div>
-    </section>
+      </section>
   `,
 })
 export class ManagerSpecialOfferComponent implements OnInit {
@@ -100,7 +110,7 @@ export class ManagerSpecialOfferComponent implements OnInit {
       if (service && service._id) {
         percentagesFormArray.push(new FormGroup({
           serviceId: new FormControl(service._id),
-          percentage: new FormControl('0', Validators.required),
+          percentage: new FormControl(0, Validators.required),
         }));
       }
     });
