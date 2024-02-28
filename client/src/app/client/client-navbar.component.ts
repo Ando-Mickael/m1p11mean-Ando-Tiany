@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { CartService } from './cart.service';
 
 @Component({
   selector: 'client-navbar',
@@ -61,7 +63,7 @@ import { Component } from '@angular/core';
             </li>
             <li class="nav-item cta cta-colored">
               <a href="/client/cart" class="nav-link"
-                ><span class="icon-shopping_cart"></span>[0]</a
+                ><span class="icon-shopping_cart"></span>[{{ productCount }}]</a
               >
             </li>
           </ul>
@@ -70,4 +72,24 @@ import { Component } from '@angular/core';
     </nav>
   `,
 })
-export class ClientNavbarComponent {}
+export class ClientNavbarComponent implements OnInit, OnDestroy {
+  productCount: number;
+  private subscription: Subscription;
+
+  constructor(private cartService: CartService) {
+    this.productCount = 0;
+    this.subscription = new Subscription();
+  }
+
+  ngOnInit() {
+    this.subscription = this.cartService.productCount$.subscribe((count) => {
+      this.productCount = count;
+    });
+
+    this.cartService.getCount();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+}

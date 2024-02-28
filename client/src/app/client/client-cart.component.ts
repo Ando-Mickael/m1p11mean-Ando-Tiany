@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ConfigService } from '../config.service';
+import { CartService } from './cart.service';
 
 @Component({
   selector: 'client-cart',
@@ -115,7 +116,10 @@ export class ClientCartComponent {
 
   apiUrl: string;
 
-  constructor(private configService: ConfigService) {
+  constructor(
+    private configService: ConfigService,
+    private cartService: CartService
+  ) {
     this.apiUrl = configService.getApiUrl();
   }
 
@@ -142,6 +146,7 @@ export class ClientCartComponent {
     cart.splice(index, 1);
     localStorage.setItem('cart', JSON.stringify(cart));
     this.refreshCart();
+    this.cartService.getCount();
   }
 
   getEmployees() {

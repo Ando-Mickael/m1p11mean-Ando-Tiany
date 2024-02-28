@@ -6,6 +6,7 @@ import { HeroComponent } from '../core/hero.component';
 import { ServiceComponent } from '../core/service.component';
 import { RelativeTimePipe } from '../pipes/relative-time.pipe';
 import { UserService } from '../services/user.service';
+import { CartService } from './cart.service';
 import { ClientCartComponent } from './client-cart.component';
 import { ClientHistoryComponent } from './client-history.component';
 import { ClientHomeComponent } from './client-home.component';
@@ -32,9 +33,7 @@ import { ClientServicesComponent } from './client-services.component';
     ServiceComponent,
   ],
   imports: [CommonModule, FormsModule, ClientRoutingModule],
-  providers: [UserService],
-  exports: [
-    FooterComponent
-  ]
+  providers: [UserService, CartService],
+  exports: [FooterComponent],
 })
 export class ClientModule {}
