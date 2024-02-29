@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const { getURL } = require("./utils/db");
 const { getPort } = require("./utils/server");
+const path = require("path");
 
 const app = express();
 const port = getPort();
@@ -15,7 +16,7 @@ app.use(express.json());
 app.use(cors());
 
 // Serve static files from the "uploads" directory
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // routes
 app.use("/", require("./routes"));
