@@ -6,6 +6,7 @@ export type Service = {
   name: string;
   price: number;
   duration: number;
+  image: string | null;
 };
 
 @Component({
@@ -15,9 +16,17 @@ export type Service = {
       <a href="#" class="img-prod"
         ><img
           class="img-fluid"
-          src="assets/images/product-1.png"
-          alt="Colorlib Template"
+          *ngIf="service?.image; else defaultImage"
+          src="http://localhost:3001/uploads/services/{{ service?.image }}"
+          [alt]="service?.name"
         />
+        <ng-template #defaultImage>
+          <img
+            class="img-fluid"
+            src="assets/images/product-1.png"
+            [alt]="service?.name"
+          />
+        </ng-template>
         <div class="overlay"></div>
       </a>
       <div class="text py-3 pb-4 px-3">
