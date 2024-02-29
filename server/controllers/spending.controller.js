@@ -176,36 +176,81 @@ async function getMonthlyCommissions(req, res, next) {
   try {
     const result = await Appointment.aggregate([
       {
-        $unwind: '$serviceIds',
+        $match: {
+          date: { $gte: new Date(`${year}-01-01`), $lt: new Date(`${parseInt(year) + 1}-01-01`) },
+          status: 'confirmed',
+        },
       },
       {
         $lookup: {
           from: 'services',
           localField: 'serviceIds',
           foreignField: '_id',
-          as: 'service',
+          as: 'services',
         },
       },
       {
-        $unwind: '$service',
+        $unwind: '$services',
       },
       {
-        $match: {
-          $expr: { $eq: [{ $year: '$date' }, parseInt(year)] },
-          status: 'confirmed',
+        $lookup: {
+          from: 'specialoffers',
+          let: { serviceId: '$services._id', appointmentDate: '$date' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $lte: ['$startDate', '$$appointmentDate'] },
+                    { $gte: ['$endDate', '$$appointmentDate'] },
+                  ],
+                },
+              },
+            },
+            {
+              $project: {
+                percentages: { $objectToArray: '$percentages' },
+              },
+            },
+          ],
+          as: 'specialOffer',
+        },
+      },
+      {
+        $unwind: { path: '$specialOffer', preserveNullAndEmptyArrays: true },
+      },
+      {
+        $addFields: {
+          discountPercentage: {
+            $cond: [
+              { $ifNull: ['$specialOffer.percentages', false] },
+              { $arrayElemAt: ['$specialOffer.percentages.v', 1] },
+              0,
+            ],
+          },
+        },
+      },
+      {
+        $addFields: {
+          discountedPrice: {
+            $cond: [
+              { $eq: ['$discountPercentage', 0] },
+              '$services.price',
+              {
+                $subtract: [
+                  '$services.price',
+                  { $multiply: ['$services.price', { $divide: ['$discountPercentage', 100] }] },
+                ],
+              },
+            ],
+          },
         },
       },
       {
         $group: {
           _id: { $month: '$date' },
-          totalCommission: {
-            $sum: {
-              $multiply: [
-                '$service.price',
-                { $divide: ['$service.commissionRate', 100] },
-              ],
-            },
-          },
+          totalCommission: { $sum: { $multiply: ['$discountedPrice', { $divide: ['$services.commissionRate', 100] }] } },
+          totalPrice: { $sum: '$discountedPrice' },
         },
       },
       {
@@ -213,13 +258,18 @@ async function getMonthlyCommissions(req, res, next) {
           _id: 0,
           month: '$_id',
           totalCommission: 1,
+          totalPrice: 1,
         },
       },
+      {
+        $sort: { month: 1 }
+      }
     ]);
 
     req.commissions = result;
     next();
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 }
