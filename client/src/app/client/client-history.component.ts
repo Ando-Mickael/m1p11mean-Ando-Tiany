@@ -22,7 +22,7 @@ import { ConfigService } from '../config.service';
                   <td>{{ appointment.date | date : 'long' }}</td>
                   <td>
                     <ul *ngFor="let service of appointment.serviceIds">
-                      <li>{{ service }}</li>
+                      <li>{{ service.name }}</li>
                     </ul>
                   </td>
                   <td *ngIf="appointment.status === 'pending'">

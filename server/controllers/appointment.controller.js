@@ -242,7 +242,9 @@ async function getByUserId(req, res) {
   const { userId } = req.params;
 
   try {
-    const appointments = await Appointment.find({ userId });
+    const appointments = await Appointment.find({ userId }).populate(
+      "serviceIds"
+    );
     res.status(200).json(appointments);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
