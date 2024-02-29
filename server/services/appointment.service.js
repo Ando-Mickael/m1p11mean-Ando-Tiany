@@ -1,4 +1,5 @@
 const Appointment = require("../models/Appointment");
+const SpecialOffer = require("../models/SpecialOffers");
 
 async function getDailyAppointmentsByMonthAndYear(year, month) {
   const startOfMonth = new Date(year, month - 1, 1);
@@ -94,8 +95,37 @@ async function getMonthlyAppointmentsByYear(year) {
   }
 }
 
+async function getTotalPrice(services, date) {
+  let totalPrice = 0;
+
+  const specialOffer = await SpecialOffer.findOne({
+    startDate: { $lte: new Date(date) },
+    endDate: { $gte: new Date(date) },
+  });
+
+  if (specialOffer) {
+    for (let index = 0; index < services.length; index++) {
+      const serviceId = services[index]._id.toString();
+      const percentage = specialOffer.percentages.get(serviceId);
+
+      if (percentage) {
+        totalPrice += (services[index].price * percentage) / 100;
+      } else {
+        totalPrice += services[index].price;
+      }
+    }
+  } else {
+    for (let index = 0; index < services.length; index++) {
+      totalPrice += services[index].price;
+    }
+  }
+
+  return totalPrice;
+}
+
 module.exports = {
   getDailyAppointmentsByMonthAndYear,
   getAppointmentsForReminder,
   getMonthlyAppointmentsByYear,
+  getTotalPrice,
 };
