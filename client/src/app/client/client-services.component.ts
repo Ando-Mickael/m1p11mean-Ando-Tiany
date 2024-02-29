@@ -44,14 +44,14 @@ export class ClientServicesComponent {
   }
 
   getServices() {
-    this.servicesLoading = true; // Set isLoading to true before making API call
-
+    this.isLoading = true;
     fetch(`${this.apiUrl}/services`)
       .then((response) => response.json())
       .then((data) => {
         this.services = data;
-        this.filteredServices = data; // Initially set filteredServices to all services
-        this.servicesLoading = false; // Set isLoading to false after data is fetched
+        this.filteredServices = data;
+        this.isLoading = false;
+        this.servicesLoading = false;
       })
       .catch((error) => {
         console.error('Error fetching services:', error);

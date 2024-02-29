@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ConfigService {
-  private apiUrl = 'http://localhost:3001';
+  private apiUrl = 'https://api-minishop.vercel.app';
 
   getApiUrl(): string {
     return this.apiUrl;
