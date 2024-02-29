@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { ConfigService } from '../config.service';
 import { CartService } from './cart.service';
 
@@ -75,6 +76,7 @@ import { CartService } from './cart.service';
                   name="date"
                   [(ngModel)]="date"
                   class="form-control"
+                  required
                 />
               </div>
               <div *ngIf="!employeesLoading" class="form-group">
@@ -84,6 +86,7 @@ import { CartService } from './cart.service';
                   name="employeeId"
                   [(ngModel)]="employeeId"
                   class="form-control"
+                  required
                 >
                   <option
                     *ngFor="let employee of employees"
@@ -118,7 +121,8 @@ export class ClientCartComponent {
 
   constructor(
     private configService: ConfigService,
-    private cartService: CartService
+    private cartService: CartService,
+    private router: Router
   ) {
     this.apiUrl = configService.getApiUrl();
   }
@@ -161,6 +165,12 @@ export class ClientCartComponent {
   onSubmit(event: Event) {
     event.preventDefault();
 
+    const cart = localStorage.getItem('cart');
+    if (!cart) {
+      alert('Veuillez ajouter au moins un service');
+      return;
+    }
+
     let data = {
       serviceIds: JSON.parse(localStorage.getItem('cart') as string),
       userId: localStorage.getItem('userId'),
@@ -177,6 +187,7 @@ export class ClientCartComponent {
     }).then(() => {
       this.clearCart();
       this.refreshCart();
+      this.router.navigate(['/client/history']);
     });
   }
 }

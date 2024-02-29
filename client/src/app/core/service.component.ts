@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CartService } from '../client/cart.service';
+import { ConfigService } from '../config.service';
 
 export type Service = {
   _id?: string;
@@ -17,7 +18,7 @@ export type Service = {
         ><img
           class="img-fluid"
           *ngIf="service?.image; else defaultImage"
-          src="http://localhost:3001/uploads/services/{{ service?.image }}"
+          src="{{ apiUrl }}/uploads/services/{{ service?.image }}"
           [alt]="service?.name"
         />
         <ng-template #defaultImage>
@@ -66,7 +67,14 @@ export type Service = {
 export class ServiceComponent {
   @Input() service: Service | null = null;
 
-  constructor(private cartService: CartService) {}
+  apiUrl: string;
+
+  constructor(
+    private cartService: CartService,
+    private configService: ConfigService
+  ) {
+    this.apiUrl = configService.getApiUrl();
+  }
 
   addToCart(id: string | undefined) {
     let cart = JSON.parse(localStorage.getItem('cart') as string);
