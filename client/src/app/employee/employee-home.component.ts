@@ -18,125 +18,147 @@ import { MatFileUploadQueueService } from '../services/mat-file-upload-queue.ser
   template: `
     <employee-navbar></employee-navbar>
 
+    <div class="row">
+      <div class="col-md-4">
+        <section class="ftco-section">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-xl-10 ftco-animate">
+                <div *ngIf="employee">
+                  <h2>Mon Profil</h2>
 
-      <div class="row">
-          <div class="col-md-4">
-              <section class="ftco-section">
-                  <div class="container">
-                      <div class="row justify-content-center">
-                          <div class="col-xl-10 ftco-animate">
-                              <div *ngIf="employee">
-                                  <h2>Mon Profil</h2>
-
-                                  <form [formGroup]="updateForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
-                                      <div class="form-group">
-                                          <label for="image">Image:</label>
-                                          <div
-                                                  cdkDropList
-                                                  #imageList="cdkDropList"
-                                                  [cdkDropListData]="employee.images"
-                                                  [cdkDropListConnectedTo]="['imageList']"
-                                                  (cdkDropListDropped)="onImageDropped($event)"
-                                          >
-                                              <div cdkDrag>
-                                                  <img
-                                                          [src]="apiUrl + '/uploads/' + employee.userInfo.picture"
-                                                          alt="Image"
-                                                          width="100"
-                                                          height="100"
-                                                  />
-                                              </div>
-                                          </div>
-                                          <div
-                                                  class="file-drop-zone mt-3"
-                                                  (drop)="onFileDrop($event)"
-                                                  (dragover)="onDragOver($event)"
-                                                  (dragleave)="onDragLeave($event)"
-                                                  (click)="triggerFileInput()"
-                                          >
-                                              Drag and drop your file here or click to select
-                                              <input
-                                                      type="file"
-                                                      id="file-upload"
-                                                      (change)="onImageSelected($event)"
-                                                      accept="image/*"
-                                                      hidden
-                                              />
-                                          </div>
-                                          <img
-                                                  *ngIf="previewUrl"
-                                                  [src]="previewUrl"
-                                                  alt="Image preview"
-                                                  style="max-width: 100%; max-height: 300px; margin-top: 20px;"
-                                          />
-                                      </div>
-
-                                      <div class="form-group">
-                                          <label for="firstName">Prénom:</label>
-                                          <input type="text" id="firstName" formControlName="firstName"
-                                                 class="form-control"/>
-                                      </div>
-
-                                      <div class="form-group">
-                                          <label for="lastName">Nom:</label>
-                                          <input type="text" id="lastName" formControlName="lastName"
-                                                 class="form-control"/>
-                                      </div>
-
-                                      <div class="form-group">
-                                          <label for="email">Email:</label>
-                                          <input type="email" id="email" formControlName="email" class="form-control"/>
-                                      </div>
-
-                                      <div class="form-group">
-                                          <label for="workSchedule">Horaire de travail:</label>
-                                          <div *ngFor="let day of daysOfWeek" class="form-group">
-                                              <label>{{ day }}:</label>
-                                              <div class="row">
-                                                  <div class="col-md-6">
-                                                      <input
-                                                              type="text"
-                                                              [formControl]="getStartTimeControl(day)!"
-                                                              placeholder="Heure de début"
-                                                              class="form-control"
-                                                      />
-                                                  </div>
-                                                  <div class="col-md-6">
-                                                      <input
-                                                              type="text"
-                                                              [formControl]="getEndTimeControl(day)!"
-                                                              placeholder="Heure de fin"
-                                                              class="form-control"
-                                                      />
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                      <button type="submit" class="btn btn-primary">Mettre à jour le profil</button>
-                                  </form>
-                              </div>
-                          </div>
+                  <form
+                    [formGroup]="updateForm"
+                    (ngSubmit)="onSubmit()"
+                    enctype="multipart/form-data"
+                  >
+                    <div class="form-group">
+                      <label for="image">Image:</label>
+                      <div
+                        cdkDropList
+                        #imageList="cdkDropList"
+                        [cdkDropListData]="employee.images"
+                        [cdkDropListConnectedTo]="['imageList']"
+                        (cdkDropListDropped)="onImageDropped($event)"
+                      >
+                        <div cdkDrag>
+                          <img
+                            [src]="
+                              apiUrl + '/uploads/' + employee.userInfo.picture
+                            "
+                            alt="Image"
+                            width="100"
+                            height="100"
+                          />
+                        </div>
                       </div>
-                  </div>
-              </section>
-          </div>
-          <div class="col-md-8">
-              <employee-appointments/>
-          </div>
-      </div>
+                      <div
+                        class="file-drop-zone mt-3"
+                        (drop)="onFileDrop($event)"
+                        (dragover)="onDragOver($event)"
+                        (dragleave)="onDragLeave($event)"
+                        (click)="triggerFileInput()"
+                      >
+                        Drag and drop your file here or click to select
+                        <input
+                          type="file"
+                          id="file-upload"
+                          (change)="onImageSelected($event)"
+                          accept="image/*"
+                          hidden
+                        />
+                      </div>
+                      <img
+                        *ngIf="previewUrl"
+                        [src]="previewUrl"
+                        alt="Image preview"
+                        style="max-width: 100%; max-height: 300px; margin-top: 20px;"
+                      />
+                    </div>
 
-      <div *ngIf="!employee">
-          <p>Chargement des données de l'employé...</p>
-      </div>
+                    <div class="form-group">
+                      <label for="firstName">Prénom:</label>
+                      <input
+                        type="text"
+                        id="firstName"
+                        formControlName="firstName"
+                        class="form-control"
+                      />
+                    </div>
 
-      <router-outlet></router-outlet>
+                    <div class="form-group">
+                      <label for="lastName">Nom:</label>
+                      <input
+                        type="text"
+                        id="lastName"
+                        formControlName="lastName"
+                        class="form-control"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="email">Email:</label>
+                      <input
+                        type="email"
+                        id="email"
+                        formControlName="email"
+                        class="form-control"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="workSchedule">Horaire de travail:</label>
+                      <div *ngFor="let day of daysOfWeek" class="form-group">
+                        <label>{{ day }}:</label>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <input
+                              type="text"
+                              [formControl]="getStartTimeControl(day)!"
+                              placeholder="Heure de début"
+                              class="form-control"
+                            />
+                          </div>
+                          <div class="col-md-6">
+                            <input
+                              type="text"
+                              [formControl]="getEndTimeControl(day)!"
+                              placeholder="Heure de fin"
+                              class="form-control"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                      Mettre à jour le profil
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="col-md-8">
+        <employee-appointments />
+      </div>
+    </div>
+
+    <div *ngIf="!employee">
+      <p>Chargement des données de l'employé...</p>
+    </div>
+
+    <router-outlet></router-outlet>
 
     <footer class="ftco-footer ftco-section">
       <div class="container">
         <div class="row">
           <div class="mouse">
             <a href="#" class="mouse-icon">
-              <div class="mouse-wheel"><span class="ion-ios-arrow-up"></span></div>
+              <div class="mouse-wheel">
+                <span class="ion-ios-arrow-up"></span>
+              </div>
             </a>
           </div>
         </div>
@@ -144,11 +166,22 @@ import { MatFileUploadQueueService } from '../services/mat-file-upload-queue.ser
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
               <h2 class="ftco-heading-2">Notre Boutique</h2>
-              <p>Bienvenue sur la boutique en ligne de notre projet. Découvrez nos produits uniques et tendances.</p>
-              <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
-                <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
-                <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
-                <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+              <p>
+                Bienvenue sur la boutique en ligne de notre projet. Découvrez
+                nos produits uniques et tendances.
+              </p>
+              <ul
+                class="ftco-footer-social list-unstyled float-md-left float-lft mt-5"
+              >
+                <li class="ftco-animate">
+                  <a href="#"><span class="icon-twitter"></span></a>
+                </li>
+                <li class="ftco-animate">
+                  <a href="#"><span class="icon-facebook"></span></a>
+                </li>
+                <li class="ftco-animate">
+                  <a href="#"><span class="icon-instagram"></span></a>
+                </li>
               </ul>
             </div>
           </div>
@@ -168,7 +201,9 @@ import { MatFileUploadQueueService } from '../services/mat-file-upload-queue.ser
               <h2 class="ftco-heading-2">Aide & Assistance</h2>
               <div class="d-flex">
                 <ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
-                  <li><a href="#" class="py-2 d-block">Livraison et Retours</a></li>
+                  <li>
+                    <a href="#" class="py-2 d-block">Livraison et Retours</a>
+                  </li>
                   <li><a href="#" class="py-2 d-block">FAQ</a></li>
                 </ul>
                 <ul class="list-unstyled">
@@ -182,9 +217,24 @@ import { MatFileUploadQueueService } from '../services/mat-file-upload-queue.ser
               <h2 class="ftco-heading-2">Besoin d'aide ?</h2>
               <div class="block-23 mb-3">
                 <ul>
-                  <li><span class="icon icon-map-marker"></span><span class="text">203 Rue Fausse, Ville Imaginaire, Pays des Rêves</span></li>
-                  <li><a href="#"><span class="icon icon-phone"></span><span class="text">+123 456 789</span></a></li>
-                  <li><a href="#"><span class="icon icon-envelope"></span><span class="text">contactnotreboutique.com</span></a></li>
+                  <li>
+                    <span class="icon icon-map-marker"></span
+                    ><span class="text"
+                      >203 Rue Fausse, Ville Imaginaire, Pays des Rêves</span
+                    >
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><span class="icon icon-phone"></span
+                      ><span class="text">+123 456 789</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><span class="icon icon-envelope"></span
+                      ><span class="text">contactnotreboutique.com</span></a
+                    >
+                  </li>
                 </ul>
               </div>
             </div>
@@ -193,13 +243,17 @@ import { MatFileUploadQueueService } from '../services/mat-file-upload-queue.ser
         <div class="row">
           <div class="col-md-12 text-center">
             <p>
-              &copy;<script>document.write(new Date().getFullYear());</script> Tous droits réservés | Projet réalisé par Sampilahy Heriniavo Tiany et Ramahenina Ando Mickael
+              &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              Tous droits réservés | Projet réalisé par Sampilahy Heriniavo
+              Tiany et Ramahenina Ando Mickael
             </p>
           </div>
         </div>
       </div>
     </footer>
-
   `,
   styles: [
     `
