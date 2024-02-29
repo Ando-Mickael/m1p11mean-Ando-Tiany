@@ -16,6 +16,7 @@ import { ClientPaymentComponent } from './client-payment.component';
 import { ClientPreferencesComponent } from './client-preferences.component';
 import { ClientRoutingModule } from './client-routing.module';
 import { ClientServicesComponent } from './client-services.component';
+import {LoaderComponent} from "../core/loader.component";
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ClientServicesComponent } from './client-services.component';
     FooterComponent,
     ClientCartComponent,
     ServiceComponent,
+    LoaderComponent
   ],
   imports: [CommonModule, FormsModule, ClientRoutingModule],
   providers: [UserService, CartService],

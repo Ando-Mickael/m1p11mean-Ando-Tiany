@@ -23,9 +23,11 @@ import { ConfigService } from '../config.service';
         </div>
       </div>
     </section>
+    <app-loader *ngIf="isLoading"></app-loader>
   `,
 })
 export class ClientServicesComponent {
+  isLoading: boolean = false;
   services: any[] = [];
   filteredServices: any[] = [];
   servicesLoading = true;
@@ -42,12 +44,18 @@ export class ClientServicesComponent {
   }
 
   getServices() {
+    this.servicesLoading = true; // Set isLoading to true before making API call
+
     fetch(`${this.apiUrl}/services`)
       .then((response) => response.json())
       .then((data) => {
         this.services = data;
         this.filteredServices = data; // Initially set filteredServices to all services
-        this.servicesLoading = false;
+        this.servicesLoading = false; // Set isLoading to false after data is fetched
+      })
+      .catch((error) => {
+        console.error('Error fetching services:', error);
+        this.servicesLoading = false; // Set isLoading to false on error
       });
   }
 
