@@ -3,6 +3,12 @@ import { Router } from '@angular/router';
 import { ConfigService } from '../config.service';
 import { CartService } from './cart.service';
 
+type Service = {
+  name: string;
+  price: number;
+  image: string;
+};
+
 @Component({
   selector: 'client-cart',
   template: `
@@ -17,12 +23,11 @@ import { CartService } from './cart.service';
                     <th>&nbsp;</th>
                     <th>&nbsp;</th>
                     <th>Produit</th>
-                    <th>Prix</th>
                     <th>Quantité</th>
-                    <th>Total</th>
+                    <th>Prix</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="!servicesLoading">
                   <tr
                     class="text-center"
                     *ngFor="let id of cart; let i = index"
@@ -36,24 +41,25 @@ import { CartService } from './cart.service';
                     <td class="image-prod">
                       <div
                         class="img"
-                        style="background-image: url(assets/images/product-3.jpg)"
+                        style="
+                          background-image: url({{
+                          this.apiUrl
+                        }}/uploads/services/{{ services[i].image }});
+                        "
                       ></div>
                     </td>
 
                     <td class="product-name">
-                      <h3>{{ id }}</h3>
-                      <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Nulla laboriosam nesciunt commodi natus, vero earum
-                        cumque unde
-                      </p>
+                      <h3>
+                        {{ services[i].name }}
+                      </h3>
                     </td>
-
-                    <td class="price">$4.90</td>
 
                     <td class="quantity">1</td>
 
-                    <td class="total">$4.90</td>
+                    <td class="total">
+                      {{ services[i].price | currency : 'MGA' }}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -110,6 +116,8 @@ import { CartService } from './cart.service';
 })
 export class ClientCartComponent {
   cart = [];
+  servicesLoading = true;
+  services: Service[] = [];
 
   employees: any[] = [];
   employeesLoading = true;
@@ -132,6 +140,24 @@ export class ClientCartComponent {
     this.refreshCart();
   }
 
+  getServices() {
+    console.log(this.cart);
+
+    fetch(`${this.apiUrl}/services/cart`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ serviceIds: this.cart }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        this.services = data.services;
+        this.servicesLoading = false;
+        console.log(data);
+      });
+  }
+
   clearCart() {
     localStorage.removeItem('cart');
   }
@@ -143,9 +169,12 @@ export class ClientCartComponent {
     } else {
       this.cart = [];
     }
+
+    this.getServices();
   }
 
   removeFromCart(index: number) {
+    console.log(index);
     let cart = JSON.parse(localStorage.getItem('cart') as string);
     cart.splice(index, 1);
     localStorage.setItem('cart', JSON.stringify(cart));

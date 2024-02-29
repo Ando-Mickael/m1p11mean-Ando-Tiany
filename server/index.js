@@ -30,8 +30,6 @@ app.use("/spendings", require("./routes/spending.route"));
 app.use("/appointments", require("./routes/appointment.route"));
 app.use("/sales", require("./routes/sales.route"));
 
-console.log(port);
-
 // start server
 if (port) {
   app.listen(port);
