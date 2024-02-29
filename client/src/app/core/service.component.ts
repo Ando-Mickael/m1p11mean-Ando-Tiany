@@ -14,7 +14,7 @@ export type Service = {
   selector: 'app-service',
   template: `
     <div class="product d-flex flex-column">
-      <a href="#" class="img-prod"
+      <a class="img-prod"
         ><img
           class="img-fluid"
           *ngIf="service?.image; else defaultImage"
@@ -37,16 +37,16 @@ export type Service = {
           </div>
           <div class="rating">
             <p class="text-right mb-0">
-              <a href="#"><span class="ion-ios-star-outline"></span></a>
-              <a href="#"><span class="ion-ios-star-outline"></span></a>
-              <a href="#"><span class="ion-ios-star-outline"></span></a>
-              <a href="#"><span class="ion-ios-star-outline"></span></a>
-              <a href="#"><span class="ion-ios-star-outline"></span></a>
+              <a><span class="ion-ios-star-outline"></span></a>
+              <a><span class="ion-ios-star-outline"></span></a>
+              <a><span class="ion-ios-star-outline"></span></a>
+              <a><span class="ion-ios-star-outline"></span></a>
+              <a><span class="ion-ios-star-outline"></span></a>
             </p>
           </div>
         </div>
         <h3>
-          <a href="#">{{ service?.name }}</a>
+          <a>{{ service?.name }}</a>
         </h3>
         <div class="pricing">
           <p class="price">
