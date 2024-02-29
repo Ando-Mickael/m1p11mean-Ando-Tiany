@@ -306,16 +306,63 @@ async function getDailyCommissions(req, res, next) {
         $unwind: '$service',
       },
       {
+        $lookup: {
+          from: 'specialoffers',
+          let: { serviceId: '$service._id', appointmentDate: '$date' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $lte: ['$startDate', '$$appointmentDate'] },
+                    { $gte: ['$endDate', '$$appointmentDate'] },
+                  ],
+                },
+              },
+            },
+            {
+              $project: {
+                percentages: { $objectToArray: '$percentages' },
+              },
+            },
+          ],
+          as: 'specialOffer',
+        },
+      },
+      {
+        $unwind: { path: '$specialOffer', preserveNullAndEmptyArrays: true },
+      },
+      {
+        $addFields: {
+          discountPercentage: {
+            $cond: [
+              { $ifNull: ['$specialOffer.percentages', false] },
+              { $arrayElemAt: ['$specialOffer.percentages.v', 1] },
+              0,
+            ],
+          },
+        },
+      },
+      {
+        $addFields: {
+          discountedPrice: {
+            $cond: [
+              { $eq: ['$discountPercentage', 0] },
+              '$service.price',
+              {
+                $subtract: [
+                  '$service.price',
+                  { $multiply: ['$service.price', { $divide: ['$discountPercentage', 100] }] },
+                ],
+              },
+            ],
+          },
+        },
+      },
+      {
         $group: {
           _id: { $dayOfMonth: '$date' }, // Group by day of month
-          totalCommission: {
-            $sum: {
-              $multiply: [
-                '$service.price',
-                { $divide: ['$service.commissionRate', 100] },
-              ],
-            },
-          },
+          totalCommission: { $sum: { $multiply: ['$discountedPrice', { $divide: ['$service.commissionRate', 100] }] } },
         },
       },
       {
@@ -325,14 +372,19 @@ async function getDailyCommissions(req, res, next) {
           totalCommission: 1,
         },
       },
+      {
+        $sort: { day: 1 }
+      }
     ]);
 
     req.commissions = result;
     next();
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 }
+
 
 async function combineExpensesAndCommissions(req, res, next) {
   try {
