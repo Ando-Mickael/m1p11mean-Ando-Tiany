@@ -3,6 +3,7 @@ const User = require("../models/User");
 const {
   getDailyAppointmentsByMonthAndYear,
   getMonthlyAppointmentsByYear,
+  getTotalPrice,
 } = require("../services/appointment.service");
 
 const getAppointments = async (req, res, next) => {
@@ -142,8 +143,8 @@ async function getDailyIncome(req, res, next) {
       const appointmentYear = new Date(appointment.date).getFullYear();
       const appointmentMonth = new Date(appointment.date).getMonth() + 1; // Month is 0-indexed
       return (
-          appointmentYear.toString() === year &&
-          appointmentMonth.toString() === month
+        appointmentYear.toString() === year &&
+        appointmentMonth.toString() === month
       );
     });
 
@@ -252,15 +253,23 @@ async function confirmedAppointment(req, res) {
   const { id } = req.params;
 
   try {
-    const appointment = await Appointment.findById(id);
+    const appointment = await Appointment.findById(id).populate("serviceIds");
 
     if (!appointment) {
       res.status(404).json({ message: "Appointment not found" });
     }
     appointment.status = "confirmed";
+    const totalPrice = await getTotalPrice(
+      appointment.serviceIds,
+      appointment.date
+    );
+    appointment.totalPrice = totalPrice;
+
     await appointment.save();
+
     res.status(200).json({ message: "Appointment confirmed successfully" });
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
