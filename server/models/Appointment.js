@@ -30,6 +30,10 @@ const appointmentSchema = new mongoose.Schema({
       ref: "Service",
     },
   ],
+  totalPrice: {
+    type: Number,
+    required: true,
+  },
 });
 
 const Appointment = mongoose.model("Appointment", appointmentSchema);

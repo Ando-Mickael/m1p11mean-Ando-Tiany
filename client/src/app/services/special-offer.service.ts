@@ -22,6 +22,7 @@ export class SpecialOfferService {
     startDate: string;
     endDate: string;
   }): Observable<any> {
+    console.log(data.percentages);
     return this.http.post(`${this.apiUrl}/special-offers`, data);
   }
 }
