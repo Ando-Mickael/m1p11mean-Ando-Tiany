@@ -51,7 +51,7 @@ import { ServiceService } from "../../services/service.service";
                                   <div formArrayName="percentages">
                                       <div *ngFor="let percentageGroup of getPercentageControls(); let i = index">
                                           <div [formGroupName]="i">
-                                              <label *ngIf="services && services[i]">{{ services[i]?.name }}</label>
+                                              <label *ngIf="services && services[i]">{{ services[i].name }}</label>
                                               <input type="number" formControlName="percentage"  class="form-control">
                                               <div *ngIf="percentageGroup.get('percentage')?.invalid && percentageGroup.get('percentage')?.touched">
                                                   <small>Percentage is required</small>
