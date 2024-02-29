@@ -35,51 +35,56 @@ interface Appointment {
 @Component({
   selector: 'employee-appointments',
   template: `
-    <section class="ftco-section">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-xl-10 ftco-animate">
-            <h2>Mes Rendez-vous</h2>
-            <div class="filter-container">
-              <div class="form-group">
-                <input type="date" [(ngModel)]="filterDate" (change)="applyFilters()" class="form-control"
-                       placeholder="Date">
+      <section class="ftco-section">
+          <div class="container">
+              <div class="row justify-content-center">
+                  <div class="col-xl-10 ftco-animate">
+                      <h2>Mes Rendez-vous</h2>
+                      <div class="filter-container">
+                          <div class="form-group">
+                              <input type="date" [(ngModel)]="filterDate" (change)="applyFilters()" class="form-control"
+                                     placeholder="Date">
+                          </div>
+                          <div class="form-group">
+                              <select [(ngModel)]="filterStatus" (change)="applyFilters()" class="form-control">
+                                  <option value="">Tous les États</option>
+                                  <option value="pending">En attente</option>
+                                  <option value="confirmed">Confirmé</option>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="appointments-container">
+                          <mat-card *ngFor="let appointment of filteredAppointments" class="appointment-card">
+                              <mat-card-header>
+                                  <mat-card-title>{{ appointment.userId.firstName }} {{ appointment.userId.lastName }}</mat-card-title>
+                                  <mat-card-subtitle>{{ appointment.date | date: 'medium' }}</mat-card-subtitle>
+                              </mat-card-header>
+                              <mat-card-content>
+                                  <ul>
+                                      <ng-container *ngFor="let service of appointment.serviceIds">
+                                          <li>
+                                              {{ service.name }} - {{ service.price }} MGA
+                                              <span *ngIf="getPromotionPercentage(appointment, service)">
+        (Promotion: {{ getPromotionPercentage(appointment, service) }}%)
+      </span>
+                                          </li>
+                                      </ng-container>
+                                  </ul>
+                                  <p>Total Prix: {{ getTotalPrice(appointment.serviceIds) }} MGA</p>
+                                  <p>Total Commission: {{ getTotalCommission(appointment.serviceIds) }} MGA</p>
+                                  <p>Status: {{ appointment.status }}</p>
+                                  <button *ngIf="appointment.status !== 'confirmed'"
+                                          (click)="confirmAppointment(appointment._id)">
+                                      Confirmer
+                                  </button>
+                              </mat-card-content>
+                          </mat-card>
+                      </div>
+                      <h2 class="mt-3">Total des Commissions: {{ getTotalCommissions() }} MGA</h2>
+                  </div>
               </div>
-              <div class="form-group">
-                <select [(ngModel)]="filterStatus" (change)="applyFilters()" class="form-control">
-                  <option value="">Tous les États</option>
-                  <option value="pending">En attente</option>
-                  <option value="confirmed">Confirmé</option>
-                </select>
-              </div>
-            </div>
-            <div class="appointments-container">
-              <mat-card *ngFor="let appointment of filteredAppointments" class="appointment-card">
-                <mat-card-header>
-                  <mat-card-title>{{ appointment.userId.firstName }} {{ appointment.userId.lastName }}</mat-card-title>
-                  <mat-card-subtitle>{{ appointment.date | date: 'medium' }}</mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-content>
-                  <ul>
-                    <li *ngFor="let service of appointment.serviceIds">
-                      {{ service.name }} - {{ service.price }} MGA
-                    </li>
-                  </ul>
-                  <p>Total Prix: {{ getTotalPrice(appointment.serviceIds) }} MGA</p>
-                  <p>Total Commission: {{ getTotalCommission(appointment.serviceIds) }} MGA</p>
-                  <p>Status: {{ appointment.status }}</p>
-                  <button *ngIf="appointment.status !== 'confirmed'"
-                          (click)="confirmAppointment(appointment._id)">
-                    Confirmer
-                  </button>
-                </mat-card-content>
-              </mat-card>
-            </div>
-            <h2 class="mt-3">Total des Commissions: {{ getTotalCommissions() }} MGA</h2>
           </div>
-        </div>
-      </div>
-    </section>
+      </section>
   `,
   styles: [
     `
@@ -228,6 +233,21 @@ export class EmployeeAppointmentsComponent implements OnInit {
 
   getTotalCommissions(): number {
     return this.filteredAppointments.reduce((sum, appointment) => sum + this.getTotalCommission(appointment.serviceIds), 0);
+  }
+
+  getPromotionPercentage(appointment: Appointment, service: Service): number | undefined {
+    const appointmentDate = new Date(appointment.date);
+    const promotion = this.promotions.find(promo => {
+      const startDate = new Date(promo.startDate);
+      const endDate = new Date(promo.endDate);
+      return appointmentDate >= startDate && appointmentDate <= endDate;
+    });
+
+    if (promotion && promotion.percentages && promotion.percentages[service._id]) {
+      return promotion.percentages[service._id];
+    } else {
+      return undefined;
+    }
   }
 
   confirmAppointment(appointmentId: string) {
